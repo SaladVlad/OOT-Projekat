@@ -11,10 +11,34 @@
             <TabItem Width="70" Height="30">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock>Tab 1</TextBlock>
+                        <TextBlock>Lokacije</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
-                <TextBlock>Cao ja sam nikola tomasevic</TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding lokacije}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding Id}" FontWeight="Bold" />
+                                    <TextBlock Text="." />
+                                    <TextBlock Text="{Binding Grad}" />
+                                    <TextBlock Text=" " />
+                                    <TextBlock Text="{Binding Drzava}"  />
+                                    <TextBlock Text="  " />
+                                    <Image  Source="{Binding Logo}" Width="40" Height="40"/>
+                                    <TextBlock Text="  " />
+                                </WrapPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Image Grid.Column="1" Source="/Logoi/serbia-map.jpg"/>
+                </Grid>
+
             </TabItem>
             <TabItem Width="70" Height="30">
                 <TabItem.Header>

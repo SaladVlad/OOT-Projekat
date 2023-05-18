@@ -1,0 +1,15 @@
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\bin\Debug\Zadatak1.exe.config
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\bin\Debug\Zadatak1.exe
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\bin\Debug\Zadatak1.pdb
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1.csproj.AssemblyReference.cache
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\MainWindow.g.cs
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\App.g.cs
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1_MarkupCompile.cache
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1_MarkupCompile.lref
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\MainWindow.baml
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1.g.resources
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1.Properties.Resources.resources
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1.csproj.GenerateResource.cache
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1.csproj.CoreCompileInputs.cache
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1.exe
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1.pdb
