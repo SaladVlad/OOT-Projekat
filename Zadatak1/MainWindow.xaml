@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zadatak1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="900" Width="1200" ResizeMode="NoResize">
     <Grid>
         <TabControl>
             <TabItem Width="70" Height="30">
@@ -20,23 +20,35 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding lokacije}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
+                    <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding lokacije}" PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" MouseMove="ListView_MouseMove" x:Name="listapogleda" SelectionMode="Single" >
+                        <ListView.ItemTemplate >
+                            <DataTemplate >
                                 <WrapPanel>
                                     <TextBlock Text="{Binding Id}" FontWeight="Bold" />
                                     <TextBlock Text="." />
                                     <TextBlock Text="{Binding Grad}" />
                                     <TextBlock Text=" " />
-                                    <TextBlock Text="{Binding Drzava}"  />
+                                    <TextBlock Text="{Binding Drzava}"   />
                                     <TextBlock Text="  " />
-                                    <Image  Source="{Binding Logo}" Width="40" Height="40"/>
+                                    <Image  Source="{Binding Logo}" Width="40" Height="40" />
                                     <TextBlock Text="  " />
                                 </WrapPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Image Grid.Column="1" Source="/Logoi/serbia-map.jpg"/>
+                    <Image Grid.Column="1"  Source="/Logoi/serbia-map.jpg"   x:Name="Slika" />
+                    <Canvas Background="Transparent" x:Name="slika" Grid.Column="1" AllowDrop="True"  DragEnter="slika_DragEnter" Drop="slika_Drop">
+                        <Canvas.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Thats it"/>
+                            </ContextMenu>
+                        </Canvas.ContextMenu>
+                        <TextBlock  x:Name="resen"></TextBlock>
+                        
+                    </Canvas>
+                   
+
+
                 </Grid>
 
             </TabItem>
