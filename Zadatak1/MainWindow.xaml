@@ -14,7 +14,7 @@
                         <TextBlock>Tab 1</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
-
+                <TextBlock>Cao ja sam nikola tomasevic</TextBlock>
             </TabItem>
             <TabItem Width="70" Height="30">
                 <TabItem.Header>
