@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dogadjaji.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/s3.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/s4.png")]
 
 

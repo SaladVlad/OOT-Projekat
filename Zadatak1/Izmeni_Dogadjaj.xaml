@@ -1,0 +1,40 @@
+﻿<Window x:Class="Zadatak1.Izmeni_Dogadjaj"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Zadatak1"
+        mc:Ignorable="d"
+        Title="Izmeni Događaj" Height="300" Width="400" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">ID:</Label>
+        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">Naziv:</Label>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">Opis:</Label>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">Datum:</Label>
+
+        <TextBox Name="tbID" Grid.Row="0" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Name="tbNaziv" Grid.Row="1" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Name="tbOpis"  Grid.Row="2" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Name="tbDatum"  Grid.Row="3" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
+
+        <Button Name="btnIzmeni" Grid.Row="4" Margin="20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnIzmeni_Click">Izmeni</Button>
+        <Button Name="btnOtkazi" Grid.Row="4" Grid.Column="2" Margin="50 20 20 20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnOtkazi_Click">Otkazi</Button>
+
+        <Image Name="img" Grid.Column="3" Margin="40,5,10,5" Grid.RowSpan="2"/>
+
+    </Grid>
+</Window>

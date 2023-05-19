@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -12,16 +9,12 @@ namespace Zadatak1
 {
     public class Dogadjaj : INotifyPropertyChanged
     {
-
-        
-
         private int id;
 
-        private List<string> atributi;
+        private ObservableCollection<string> atributi;
         private string naziv, opis, datumOdrzavanja, imageSource;
 
         private Image slika;
-        private double posX, posY;
 
         public Dogadjaj(int id, string naziv, string opis, string datumOdrzavanja, string imageSource)
         {
@@ -31,46 +24,78 @@ namespace Zadatak1
             this.DatumOdrzavanja = datumOdrzavanja;
             this.imageSource = imageSource;
 
-            atributi = new List<string>();
-
-            atributi.Add(naziv);
-            atributi.Add(opis);
-            atributi.Add(datumOdrzavanja);
+            atributi = new ObservableCollection<string>
+            {
+                naziv,
+                opis,
+                datumOdrzavanja
+            };
 
             this.Slika = new Image();
-            if (imageSource == "")
-                 Slika.Source = null;
-            else Slika.Source = new BitmapImage(new Uri(imageSource,UriKind.Relative));
+            if (imageSource == "" && (!imageSource.Contains(".png") || !imageSource.Contains(".png")))
+                Slika.Source = new BitmapImage(new Uri("placeholder.png", UriKind.Relative));
+            else Slika.Source = new BitmapImage(new Uri(imageSource, UriKind.Relative));
 
 
+        }
+
+        public override string ToString()
+        {
+            return id + "," + naziv + "," + opis + "," + datumOdrzavanja + "," + imageSource;
+        }
+
+        public void Update_List()
+        {
+            atributi.Clear();
+            atributi.Add(Naziv);
+            atributi.Add(Opis);
+            atributi.Add(DatumOdrzavanja);
+            OnPropertyChanged("Atributi");
         }
 
         #region =====set-get=====
-        public int Id {
+        public int Id
+        {
             get { return this.id; }
-            set {
-                if (this.id != value) { this.id = value; this.NotifyPropertyChanged("Id"); }
+            set
+            {
+                if (this.id != value) { this.id = value; this.OnPropertyChanged("Id"); }
             }
         }
-        public string Naziv {
+        public string Naziv
+        {
             get { return this.naziv; }
             set
             {
-                if (this.naziv != value) { this.naziv = value; this.NotifyPropertyChanged("Naziv"); }
+                if (this.naziv != value) { this.naziv = value; this.OnPropertyChanged("Naziv"); }
             }
         }
-        public string Opis {
+        public string Opis
+        {
             get { return this.opis; }
             set
             {
-                if (this.opis != value) { this.opis = value; this.NotifyPropertyChanged("Opis"); }
+                if (this.opis != value) { this.opis = value; this.OnPropertyChanged("Opis"); }
             }
         }
-        public string DatumOdrzavanja {
+        public string DatumOdrzavanja
+        {
             get { return this.datumOdrzavanja; }
             set
             {
-                if (this.datumOdrzavanja != value) { this.datumOdrzavanja = value; this.NotifyPropertyChanged("DatumOdrzavanja"); }
+                if (this.datumOdrzavanja != value) { this.datumOdrzavanja = value; this.OnPropertyChanged("DatumOdrzavanja"); }
+            }
+        }
+        public ObservableCollection<string> Atributi
+        {
+            get { return this.atributi; }
+            set
+            {
+                if(this.atributi != value) { this.atributi = value; this.OnPropertyChanged("Atributi");
+                    this.OnPropertyChanged("Naziv");
+                    this.OnPropertyChanged("Opis");
+                    this.OnPropertyChanged("DatumOdrzavanja");
+                }
             }
         }
         public string ImageSource
@@ -78,39 +103,26 @@ namespace Zadatak1
             get { return this.imageSource; }
             set
             {
-                if (this.imageSource != value) { this.imageSource = value; this.NotifyPropertyChanged("ImageSource"); }
+                if (this.imageSource != value) { this.imageSource = value; this.OnPropertyChanged("ImageSource"); }
             }
         }
-        public Image Slika {
+        public Image Slika
+        {
             get { return this.slika; }
             set
             {
-                if (this.slika != value) { this.slika = value; this.NotifyPropertyChanged("Slika"); }
+                if (this.slika != value) { this.slika = value; this.OnPropertyChanged("Slika"); }
             }
         }
-        public double PosX {
-            get { return this.posX; }
-            set
-            {
-                if (this.posX != value) { this.posX = value; this.NotifyPropertyChanged("PosX"); }
-            }
-        }
-        public double PosY {
-            get { return this.posY; }
-            set
-            {
-                if (this.posY != value) { this.posY = value; this.NotifyPropertyChanged("PosY"); }
-            }
-        }
-        public List<string> Atributi { get => atributi; set => atributi = value; }
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public void NotifyPropertyChanged(string propName)
+        protected virtual void OnPropertyChanged(string name)
         {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
         }
     }
 
