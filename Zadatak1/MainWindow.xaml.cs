@@ -22,6 +22,7 @@ namespace Zadatak1
     /// </summary>
     public partial class MainWindow : Window
     {
+        ContextMenu contextMenu = new ContextMenu();
         Point startPoint = new Point();
         public MainWindow()
         {
@@ -34,6 +35,20 @@ namespace Zadatak1
             l.Add(new lokacija { Id = "5", Grad = "Leskovac", Drzava = "Srbija", Logo = "/Logoi/leskovac.png" });
 
             lokacije = new ObservableCollection<lokacija>(l);
+    
+    
+            MenuItem menuItem1 = new MenuItem();
+            menuItem1.Header = "Dodaj";
+           
+            menuItem1.Click += MenuItem_Click;
+
+            MenuItem menuItem2 = new MenuItem();
+            menuItem2.Header = "Obrisi";
+            menuItem2.Click += MenuItem_Click;
+
+
+            contextMenu.Items.Add(menuItem1);
+            contextMenu.Items.Add(menuItem2);
             InitializeComponent();
         }
         public ObservableCollection<lokacija> lokacije
@@ -117,8 +132,8 @@ namespace Zadatak1
                 e.Effects = DragDropEffects.None;
             }
         }
-        static string txt;
-        static string source;
+
+       
         private void slika_Drop(object sender, DragEventArgs e)
         {
 
@@ -130,19 +145,7 @@ namespace Zadatak1
             if (student != null)
             {
 
-              ContextMenu  contextMenu = new ContextMenu();
-                contextMenu.Width = 200;
-                contextMenu.Height = 300;
-                MenuItem menuItem1 = new MenuItem();
-                menuItem1.Header = "Option 1";
-                menuItem1.Click += MenuItem_Click;
-
-                MenuItem menuItem2 = new MenuItem();
-                menuItem2.Header = "Option 2";
-                menuItem2.Click += MenuItem_Click;
-
-                contextMenu.Items.Add(menuItem1);
-                contextMenu.Items.Add(menuItem2);
+           
                 //---------------------------------
 
 
@@ -170,25 +173,31 @@ namespace Zadatak1
                 itemToDisable.IsEnabled = false;
                 itemToDisable.IsHitTestVisible = false;
 
-             
-                txt = student.Grad;
-                source = student.Logo;
-
+            }
+            else
+            {
+                nesto2 = nova;
+                nesto2.PreviewMouseLeftButtonDown += Element_PreviewMouseLeftButtonDown;
+                nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
 
             }
-         
             Canvas.SetLeft(nesto2, dropPosition.X);
             Canvas.SetTop(nesto2, dropPosition.Y);
+
+
         }
+        TextBlock nova;
         private void Element_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-        
+            nova = sender as TextBlock;
             DragDrop.DoDragDrop(sender as TextBlock, sender as TextBlock, DragDropEffects.Move);
-            slika.Children.Remove(sender as TextBlock);
+         
+          
+           
         }
         private void nesto2_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ContextMenu contextMenu = new ContextMenu();
+      
             TextBlock textBlock = sender as TextBlock;
             textBlock.ContextMenu = contextMenu;
         }
