@@ -21,8 +21,8 @@ namespace Zadatak1
         private string grad;
         private string drzava;
         private string logo;
-       
-        
+
+
         public string Id
         {
             get
@@ -85,6 +85,8 @@ namespace Zadatak1
                 }
             }
         }
+
+
 
 
     }

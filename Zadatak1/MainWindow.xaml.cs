@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Media;
+
 
 namespace Zadatak1
 {
@@ -61,25 +61,39 @@ namespace Zadatak1
 
         private void ListView_MouseMove(object sender, MouseEventArgs e)
         {
-            Point mousePos = e.GetPosition(null);
-            Vector diff = startPoint - mousePos;
-
-            if (e.LeftButton == MouseButtonState.Pressed &&
-                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+            try
             {
-                // Get the dragged ListViewItem
-                ListView listView = sender as ListView;
-                ListViewItem listViewItem = FindAncestor<ListViewItem>((DependencyObject)e.OriginalSource);
-    
+                Point mousePos = e.GetPosition(null);
+                Vector diff = startPoint - mousePos;
 
-                // Find the data behind the ListViewItem
-                lokacija student = (lokacija)listView.ItemContainerGenerator.
-                    ItemFromContainer(listViewItem);
+                if (e.LeftButton == MouseButtonState.Pressed &&
+                    (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+                {
+                    // Get the dragged ListViewItem
+                    ListView listView = sender as ListView;
+                    ListViewItem listViewItem = FindAncestor<ListViewItem>((DependencyObject)e.OriginalSource);
 
-                // Initialize the drag & drop operation
-                DataObject dragData = new DataObject("myFormat", student);
-                DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
+
+                    // Find the data behind the ListViewItem
+                    
+
+
+                    lokacija nista = (lokacija)listapogleda.SelectedItems[0];
+                    int index = listapogleda.Items.IndexOf(nista);
+                    ListViewItem itemToDisable = (ListViewItem)listapogleda.ItemContainerGenerator.ContainerFromIndex(index);
+                    if (itemToDisable.IsEnabled == true)
+                    {
+                        // Initialize the drag & drop operation
+                        lokacija student = (lokacija)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                        DataObject dragData = new DataObject("myFormat", student);
+                        DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
+                    }
+                }
+            }
+            catch(ArgumentNullException o)
+            {
+
             }
         }
         private static T FindAncestor<T>(DependencyObject current) where T : DependencyObject
@@ -103,39 +117,87 @@ namespace Zadatak1
                 e.Effects = DragDropEffects.None;
             }
         }
-
+        static string txt;
+        static string source;
         private void slika_Drop(object sender, DragEventArgs e)
         {
-          
-                Point dropPosition = e.GetPosition(slika);
-                lokacija student = e.Data.GetData("myFormat") as lokacija;
-            TextBlock nesto = new TextBlock();
-            slika.Children.Add(nesto);
-            nesto.Text = student.Grad;
-            nesto.FontSize = 20;
-            nesto.Background = Brushes.Transparent;
-
-          
-        
-    //          lokacija nista = (lokacija)listapogleda.SelectedItems[0];
-  //        int index =listapogleda.Items.IndexOf(nista);
-//            ListViewItem item = listapogleda.Items[index] as ListViewItem;
-
-         //   foreach (ListViewItem i in listapogleda.Items)
-          //  {
-                
-            //    MessageBox.Show(i.ToString());
-            //}
-            //item.IsEnabled = false;
-            //   (ListViewItem)listapogleda.Items.
-            //nista.IsEnabled = false;
-            //       lokacije.Remove(student);
-            Canvas.SetLeft(nesto, dropPosition.X );
-                Canvas.SetTop(nesto, dropPosition.Y);
-
-
 
             
+                Point dropPosition = e.GetPosition(slika);
+                lokacija student = e.Data.GetData("myFormat") as lokacija;
+            TextBlock nesto2 = new TextBlock();
+
+            if (student != null)
+            {
+
+              ContextMenu  contextMenu = new ContextMenu();
+                contextMenu.Width = 200;
+                contextMenu.Height = 300;
+                MenuItem menuItem1 = new MenuItem();
+                menuItem1.Header = "Option 1";
+                menuItem1.Click += MenuItem_Click;
+
+                MenuItem menuItem2 = new MenuItem();
+                menuItem2.Header = "Option 2";
+                menuItem2.Click += MenuItem_Click;
+
+                contextMenu.Items.Add(menuItem1);
+                contextMenu.Items.Add(menuItem2);
+                //---------------------------------
+
+
+                nesto2.Text = student.Grad;
+
+                nesto2.HorizontalAlignment = HorizontalAlignment.Center;
+
+                nesto2.PreviewMouseLeftButtonDown += Element_PreviewMouseLeftButtonDown;
+                nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
+
+
+                Image image = new Image();
+                image.Source = new BitmapImage(new Uri(student.Logo, UriKind.RelativeOrAbsolute));
+                image.Width = 30;
+                image.Height = 30;
+                InlineUIContainer inlineContainer = new InlineUIContainer(image);
+                nesto2.Inlines.Add(inlineContainer);
+
+                slika.Children.Add(nesto2);
+
+
+                lokacija nista = (lokacija)listapogleda.SelectedItems[0];
+                int index = listapogleda.Items.IndexOf(nista);
+                ListViewItem itemToDisable = (ListViewItem)listapogleda.ItemContainerGenerator.ContainerFromIndex(index);
+                itemToDisable.IsEnabled = false;
+                itemToDisable.IsHitTestVisible = false;
+
+             
+                txt = student.Grad;
+                source = student.Logo;
+
+
+            }
+         
+            Canvas.SetLeft(nesto2, dropPosition.X);
+            Canvas.SetTop(nesto2, dropPosition.Y);
         }
+        private void Element_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+        
+            DragDrop.DoDragDrop(sender as TextBlock, sender as TextBlock, DragDropEffects.Move);
+            slika.Children.Remove(sender as TextBlock);
+        }
+        private void nesto2_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenu contextMenu = new ContextMenu();
+            TextBlock textBlock = sender as TextBlock;
+            textBlock.ContextMenu = contextMenu;
+        }
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            // Handle the menu item click event
+        }
+
+
     }
 }
