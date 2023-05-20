@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zadatak1"
         mc:Ignorable="d"
-        Title="Dodaj_Dogadjaj" Height="300" Width="400" ResizeMode="NoResize">
+        Title="Dodaj_Dogadjaj" Height="350" Width="450" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -22,20 +22,26 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8">ID:</Label>
-        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8">Naziv:</Label>
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8">Opis:</Label>
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8">Datum:</Label>
-        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8">Ime slike:</Label>
+        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">ID:</Label>
+        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Naziv:</Label>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Opis:</Label>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Datum:</Label>
+        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Ime slike:</Label>
 
         <TextBox Name="tbID" Grid.Row="0" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
         <TextBox Name="tbNaziv" Grid.Row="1" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
         <TextBox Name="tbOpis"  Grid.Row="2" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
         <TextBox Name="tbDatum"  Grid.Row="3" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
-        <TextBox Name="tbSource"  Grid.Row="4" Grid.Column="1" Margin="10" Grid.ColumnSpan="2">(default)</TextBox>
+        <ComboBox Name="cmbSource"  Grid.Row="4" Grid.Column="1" Margin="10" Grid.ColumnSpan="2" SelectedIndex="0">
+            <ComboBoxItem VerticalAlignment="Center">(default)</ComboBoxItem>
+            <ComboBoxItem VerticalAlignment="Center">s1</ComboBoxItem>
+            <ComboBoxItem VerticalAlignment="Center">s2</ComboBoxItem>
+            <ComboBoxItem VerticalAlignment="Center">s3</ComboBoxItem>
+            <ComboBoxItem VerticalAlignment="Center">s4</ComboBoxItem>
+        </ComboBox>
 
-        <Button Name="btnNapravi" Grid.Row="5" Margin="20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnNapravi_Click">Napravi</Button>
-        <Button Name="btnOtkazi" Grid.Row="5" Grid.Column="2" Margin="20 20 20 20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnOtkazi_Click">Otkazi</Button>
+        <Button Name="btnNapravi" Grid.Row="5" Margin="20" Grid.ColumnSpan="2" FontWeight="Bold" Click="BtnNapravi_Click">Napravi</Button>
+        <Button Name="btnOtkazi" Grid.Row="5" Grid.Column="2" Margin="20 20 20 20" Grid.ColumnSpan="2" FontWeight="Bold" Click="BtnOtkazi_Click">Otkazi</Button>
 
     </Grid>
 </Window>

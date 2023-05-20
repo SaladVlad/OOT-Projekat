@@ -12,6 +12,7 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -21,20 +22,28 @@
             <ColumnDefinition Width="1.5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">ID:</Label>
-        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">Naziv:</Label>
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">Opis:</Label>
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">Datum:</Label>
+        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">ID:</Label>
+        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Naziv:</Label>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Opis:</Label>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Datum:</Label>
+        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Izvor slike:</Label>
 
-        <TextBox Name="tbID" Grid.Row="0" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
-        <TextBox Name="tbNaziv" Grid.Row="1" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
-        <TextBox Name="tbOpis"  Grid.Row="2" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
-        <TextBox Name="tbDatum"  Grid.Row="3" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Name="tbID" Grid.Row="0" Grid.Column="1" Margin="8" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Name="tbNaziv" Grid.Row="1" Grid.Column="1" Margin="8" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Name="tbOpis"  Grid.Row="2" Grid.Column="1" Margin="8" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Name="tbDatum"  Grid.Row="3" Grid.Column="1" Margin="8" Grid.ColumnSpan="2"></TextBox>
+        <ComboBox Name="cmbSource" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="8" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" SelectionChanged="cmbSource_SelectionChanged">
+            <ComboBoxItem>(default)</ComboBoxItem>
+            <ComboBoxItem>s1</ComboBoxItem>
+            <ComboBoxItem>s2</ComboBoxItem>
+            <ComboBoxItem>s3</ComboBoxItem>
+            <ComboBoxItem>s4</ComboBoxItem>
+        </ComboBox>
 
-        <Button Name="btnIzmeni" Grid.Row="4" Margin="20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnIzmeni_Click">Izmeni</Button>
-        <Button Name="btnOtkazi" Grid.Row="4" Grid.Column="2" Margin="50 20 20 20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnOtkazi_Click">Otkazi</Button>
+        <Button Name="btnIzmeni" Grid.Row="5" Margin="20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnIzmeni_Click">Izmeni</Button>
+        <Button Name="btnOtkazi" Grid.Row="5" Grid.Column="2" Margin="50 20 20 20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnOtkazi_Click">Otkazi</Button>
 
-        <Image Name="img" Grid.Column="3" Margin="40,5,10,5" Grid.RowSpan="2"/>
+        <Image Name="img" Grid.Column="3" Margin="7,10,7,10" Grid.RowSpan="3" Grid.Row="1"/>
 
     </Grid>
 </Window>

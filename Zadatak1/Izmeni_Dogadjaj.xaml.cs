@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
 namespace Zadatak1
@@ -19,7 +21,15 @@ namespace Zadatak1
             tbNaziv.Text = D.Naziv;
             tbOpis.Text = D.Opis;
             tbDatum.Text = D.DatumOdrzavanja;
-            img.Source = D.Slika.Source;
+            try
+            {
+                cmbSource.SelectedIndex = int.Parse(D.ImageSource.Replace("Images/s", "").Remove(1));
+            }
+            catch
+            {
+                cmbSource.SelectedIndex = 0;
+            }
+            cmbSource_SelectionChanged(null,null);
         }
 
         private void btnIzmeni_Click(object sender, RoutedEventArgs e)
@@ -56,6 +66,26 @@ namespace Zadatak1
         private void btnOtkazi_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void cmbSource_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+            string selected = (cmbSource.SelectedItem as ComboBoxItem).Content.ToString();
+            BitmapImage bmi;
+            if (selected == "(default)")
+            {
+                selected = "placeholder";
+            }
+            bmi = new BitmapImage(new Uri("Images/" + selected + ".png", UriKind.RelativeOrAbsolute));
+            
+            
+            if(img.Source != bmi)
+            {
+                img.Source = bmi;
+                D.Slika.Source = bmi;
+                D.ImageSource = "Images/" + selected + ".png";
+            }
         }
     }
 }

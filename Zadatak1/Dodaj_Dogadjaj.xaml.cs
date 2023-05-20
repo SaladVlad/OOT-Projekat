@@ -19,59 +19,89 @@ namespace Zadatak1
     /// Interaction logic for Dodaj_Dogadjaj.xaml
     /// </summary>
     public partial class Dodaj_Dogadjaj : Window
-    {   
+    {
         public ObservableCollection<Dogadjaj> Dogadjaji { get; set; }
-        public Dodaj_Dogadjaj(ObservableCollection<Dogadjaj> dogadjaji)
+        int brDogadjaja;
+        public Dodaj_Dogadjaj(ObservableCollection<Dogadjaj> dogadjaji, ref int brDogadjaja)
         {
             InitializeComponent();
             Dogadjaji = dogadjaji;
+            this.brDogadjaja = brDogadjaja;
 
         }
 
-        private void btnNapravi_Click(object sender, RoutedEventArgs e)
+        private void BtnNapravi_Click(object sender, RoutedEventArgs e)
         {
-            
-                if (tbNaziv.Text == "" || tbOpis.Text == "" || tbDatum.Text == "" || tbID.Text == "")
+            if (tbNaziv.Text == "" || tbOpis.Text == "" || tbDatum.Text == "" || tbID.Text == "")
+            {
+                MessageBox.Show("Ne smeju da postoje prazna polja!", "Upozorenje", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
+            else if (!int.TryParse(tbID.Text, out _))
+            {
+                MessageBox.Show("Format ID-a nije ispravan! ID može da sadrži samo brojeve.", "Upozorenje", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+            else
+            {
+                string[] ss = tbDatum.Text.Split('.');
+
+                if (int.TryParse(ss[0], out _) && int.TryParse(ss[1], out _) && int.TryParse(ss[2], out _) && (ss.Length == 4 || ss.Length == 3))
                 {
-                    MessageBox.Show("Ne smeju da postoje prazna polja!", "Upozorenje", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    return;
+
+                    int dan, mesec, godina;
+                    dan = int.Parse(ss[0]);
+                    mesec = int.Parse(ss[1]);
+                    godina = int.Parse(ss[2]);
+
+                    if ((godina > 2022 && godina < 2100) && (mesec >= 1 && mesec <= 12) && (dan >= 1 && dan <= 31)) {
+                        
+                        int id = int.Parse(tbID.Text);
+                        string datumOdrzavanja = tbDatum.Text;
+                        string naziv = tbNaziv.Text;
+                        string opis = tbOpis.Text;
+                        ComboBoxItem cbi = cmbSource.SelectedItem as ComboBoxItem;
+                        string imageSource = cbi.Content.ToString();
+                        if (imageSource == "(default)") imageSource = "Images/placeholder.png";
+                        else imageSource = "Images/" + imageSource + ".png";
+
+                        Dogadjaj d = new Dogadjaj(id, naziv, opis, datumOdrzavanja, imageSource);
+                        foreach(Dogadjaj dog in Dogadjaji)
+                        {
+                            if (dog.Id == id)
+                            {
+                                MessageBox.Show("Vec postoji dogadjaj sa ovim ID-em!", "Greška!", MessageBoxButton.OK, MessageBoxImage.Hand);
+                                return;
+                            }
+                        }
+                        Dogadjaji.Add(d);
+                        brDogadjaja++;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ovaj datum nije validan!", "Greška!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        return;
+                    }
+ 
                 }
                 else
                 {
-                    string[] ss = tbDatum.Text.Split('.');
-                    int check;
-                    try
-                    {
-                        if (Int32.TryParse(ss[0], out check) && Int32.TryParse(ss[1], out check) && Int32.TryParse(ss[2], out check) && ss.Length == 4)
-                        {
-                        int id = int.Parse(tbID.Text);
-                            string datumOdrzavanja = tbDatum.Text;
-                            string naziv = tbNaziv.Text;
-                            string opis = tbOpis.Text;
-                            string imageSource;
-                        if (tbSource.Text == "(default)") imageSource = "Images/placeholder.png"; 
-                        else imageSource = "Images/" + tbSource.Text;
-
-                        Dogadjaj d = new Dogadjaj(id, naziv, opis, datumOdrzavanja, imageSource);
-                        Dogadjaji.Add(d);
-                    }   
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Format datuma nije ispravan!", "Upozorenje", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        return;
-                    }
-                    
-
-
+                    MessageBox.Show("Format datuma nije ispravan!", "Upozorenje", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return;
                 }
-                MessageBox.Show("Uspesno dodat dogadjaj!", "Dodavanje", MessageBoxButton.OK, MessageBoxImage.Information);
-           
+
+
+            }
+            MessageBox.Show("Uspesno dodat dogadjaj!", "Dodavanje", MessageBoxButton.OK, MessageBoxImage.Information);
+            this.Close();
+
         }
 
-        private void btnOtkazi_Click(object sender, RoutedEventArgs e)
+        private void BtnOtkazi_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
+
     }
 }
