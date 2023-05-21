@@ -38,16 +38,22 @@
                     </ListView>
                     <Image Grid.Column="1"  Source="/Logoi/serbia-map.jpg"   x:Name="Slika" />
                     <Canvas Background="Transparent" x:Name="slika" Grid.Column="1" AllowDrop="True"  DragEnter="slika_DragEnter" Drop="slika_Drop">
-                     
+                 
                         <Canvas.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Thats it"/>
+                                <MenuItem Header="Dodaj novu lokaciju"/>
                             </ContextMenu>
                         </Canvas.ContextMenu>
-                        <TextBlock  x:Name="resen"></TextBlock>
                         
+                    
+                        <TextBlock  x:Name="resen"></TextBlock>
                     </Canvas>
-                   
+
+                 
+
+
+
+
 
 
                 </Grid>

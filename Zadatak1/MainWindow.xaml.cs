@@ -22,12 +22,19 @@ namespace Zadatak1
     /// </summary>
     public partial class MainWindow : Window
     {
+
         ContextMenu contextMenu = new ContextMenu();
+        MenuItem menuItem1 = new MenuItem();
+    
+
+            MenuItem menuItem2 = new MenuItem();
+     
         Point startPoint = new Point();
+        List<lokacija> l = new List<lokacija>();
         public MainWindow()
         {
             this.DataContext = this;
-            List<lokacija> l = new List<lokacija>();
+          
             l.Add(new lokacija { Id = "1", Grad = "Novi Sad", Drzava = "Srbija", Logo = "/Logoi/novisad.png" } );
             l.Add(new lokacija { Id = "2", Grad = "Beograd", Drzava = "Srbija", Logo = "/Logoi/beograd.png" });
             l.Add(new lokacija { Id = "3", Grad = "Nis", Drzava = "Srbija", Logo = "/Logoi/nis.png" });
@@ -35,15 +42,9 @@ namespace Zadatak1
             l.Add(new lokacija { Id = "5", Grad = "Leskovac", Drzava = "Srbija", Logo = "/Logoi/leskovac.png" });
 
             lokacije = new ObservableCollection<lokacija>(l);
-    
-    
-            MenuItem menuItem1 = new MenuItem();
-            menuItem1.Header = "Dodaj";
-           
+            menuItem1.Header = "Ukloni ikonicu sa mape";
             menuItem1.Click += MenuItem_Click;
-
-            MenuItem menuItem2 = new MenuItem();
-            menuItem2.Header = "Obrisi";
+            menuItem2.Header = "Ukloni lokaciju iz liste";
             menuItem2.Click += MenuItem_Click;
 
 
@@ -56,16 +57,35 @@ namespace Zadatak1
             get;
             set;
         }
-
-        private void TextBlock_MouseMove(object sender, MouseEventArgs e)
+        public class AutoResizedCanvas : Canvas
         {
-         
-        }
+            protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint)
+            {
+                base.MeasureOverride(constraint);
+                double width = base
+                    .InternalChildren
+                    .OfType<UIElement>()
+                    .Where(i => i.GetValue(Canvas.LeftProperty) != null)
+                    .Max(i => i.DesiredSize.Width + (double)i.GetValue(Canvas.LeftProperty));
 
-        private void Image_Drop(object sender, DragEventArgs e)
-        {
-   
-           
+                if (Double.IsNaN(width))
+                {
+                    width = 0;
+                }
+
+                double height = base
+                    .InternalChildren
+                    .OfType<UIElement>()
+                    .Where(i => i.GetValue(Canvas.TopProperty) != null)
+                    .Max(i => i.DesiredSize.Height + (double)i.GetValue(Canvas.TopProperty));
+
+                if (Double.IsNaN(height))
+                {
+                    height = 0;
+                }
+
+                return new Size(width, height);
+            }
         }
 
         private void ListView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -133,14 +153,14 @@ namespace Zadatak1
             }
         }
 
-       
+        TextBlock nesto2;
         private void slika_Drop(object sender, DragEventArgs e)
         {
 
             
                 Point dropPosition = e.GetPosition(slika);
                 lokacija student = e.Data.GetData("myFormat") as lokacija;
-            TextBlock nesto2 = new TextBlock();
+          nesto2 = new TextBlock();
 
             if (student != null)
             {
@@ -195,8 +215,10 @@ namespace Zadatak1
           
            
         }
+        TextBlock desno;
         private void nesto2_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            desno = sender as TextBlock;
       
             TextBlock textBlock = sender as TextBlock;
             textBlock.ContextMenu = contextMenu;
@@ -204,7 +226,31 @@ namespace Zadatak1
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = sender as MenuItem;
-            // Handle the menu item click event
+            if (sender == menuItem1)
+            {
+                
+                    slika.Children.Remove(desno);
+                
+            }
+            if (sender == menuItem2)
+            {
+             
+
+                List<lokacija> itemsToRemove = new List<lokacija>();
+
+                lokacija opa = new lokacija();
+                foreach(lokacija k in l)
+                {
+                    if(k.Grad == desno.Text)
+                    {
+                        opa = k;
+                    }
+                }
+                lokacije.Remove(opa);
+                slika.Children.Remove(desno);
+
+            }
+
         }
 
 
