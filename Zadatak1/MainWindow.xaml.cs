@@ -31,6 +31,7 @@ namespace Zadatak1
      
         Point startPoint = new Point();
         List<lokacija> l = new List<lokacija>();
+      
         public MainWindow()
         {
             this.DataContext = this;
@@ -253,6 +254,10 @@ namespace Zadatak1
 
         }
 
-
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            DodajLokaciju dl = new DodajLokaciju(lokacije,l);
+            dl.Show();
+        }
     }
 }
