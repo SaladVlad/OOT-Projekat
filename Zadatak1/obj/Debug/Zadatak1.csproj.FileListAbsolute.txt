@@ -19,3 +19,10 @@ E:\Visual Studio Projects\Zadatak1\Zadatak1\obj\Debug\Zadatak1.csproj.GenerateRe
 E:\Visual Studio Projects\Zadatak1\Zadatak1\obj\Debug\Zadatak1.csproj.CoreCompileInputs.cache
 E:\Visual Studio Projects\Zadatak1\Zadatak1\obj\Debug\Zadatak1.exe
 E:\Visual Studio Projects\Zadatak1\Zadatak1\obj\Debug\Zadatak1.pdb
+E:\Visual Studio Projects\Zadatak1\Zadatak1\bin\Debug\EPPlus.dll
+E:\Visual Studio Projects\Zadatak1\Zadatak1\bin\Debug\EPPlus.Interfaces.dll
+E:\Visual Studio Projects\Zadatak1\Zadatak1\bin\Debug\EPPlus.System.Drawing.dll
+E:\Visual Studio Projects\Zadatak1\Zadatak1\bin\Debug\Microsoft.IO.RecyclableMemoryStream.dll
+E:\Visual Studio Projects\Zadatak1\Zadatak1\bin\Debug\EPPlus.xml
+E:\Visual Studio Projects\Zadatak1\Zadatak1\bin\Debug\Microsoft.IO.RecyclableMemoryStream.xml
+E:\Visual Studio Projects\Zadatak1\Zadatak1\obj\Debug\Zadatak1.csproj.CopyComplete

@@ -21,7 +21,7 @@
             <TabItem Width="70" Height="30">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock>Tab 2</TextBlock>
+                        <TextBlock>Događaji</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
@@ -87,6 +87,26 @@
                         <TextBlock>Tab 3</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="8*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Name="dtg" Grid.Row="0" Grid.ColumnSpan="2" ItemsSource="{Binding TreeNodes}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Naziv" Binding="{Binding Naziv}"/>
+                            <DataGridTextColumn Header="Opis" Binding="{Binding Naziv}"/>
+                            <DataGridTextColumn Header="Datum Odrzavanja" Binding="{Binding DatumOdrzavanja}"/>
+                            <DataGridTextColumn Header="Lokacija događaja" Binding="{Binding}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Grid.Row="1" Click="Save_XLS_Click">Save as .xls</Button>
+                </Grid>
             </TabItem>
             
         </TabControl>

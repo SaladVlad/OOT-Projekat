@@ -8,6 +8,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+//FOR WRITING TO AN EXCEL FILE
+using Microsoft.Win32;
+using OfficeOpenXml;
+
 
 namespace Zadatak1
 {
@@ -62,19 +66,19 @@ namespace Zadatak1
             return dogadjaji;
         }
 
-        
+
         public void BtnSacuvajDogadjaje_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 using (StreamWriter sw = new StreamWriter("Files/Dogadjaji.txt"))
                 {
-                    foreach(Dogadjaj d in TreeNodes)
+                    foreach (Dogadjaj d in TreeNodes)
                     {
                         sw.WriteLine(d.ToString());
                     }
                 }
-                MessageBox.Show("Uspesno sacuvano u fajl!","Cuvanje",MessageBoxButton.OK,MessageBoxImage.Asterisk);
+                MessageBox.Show("Uspesno sacuvano u fajl!", "Cuvanje", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             catch
             {
@@ -91,7 +95,7 @@ namespace Zadatak1
             if (e.ClickCount == 2)
             {
                 TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-                Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(treeViewItem.DataContext as Dogadjaj);
+                Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(treeViewItem.DataContext as Dogadjaj, listaPostavljenih);
                 izmeni.Show();
             }
             startPoint = e.GetPosition(null);
@@ -202,7 +206,7 @@ namespace Zadatak1
             obrisi.Header = "Obriši";
             obrisi.Click += Obrisi_Dogadjaj_Click;
 
-        
+
             contextMenu.Items.Add(izmeni);
             contextMenu.Items.Add(ukloni);
             contextMenu.Items.Add(obrisi);
@@ -233,7 +237,7 @@ namespace Zadatak1
         {
             if (e.ClickCount == 2)
             {
-                Izmeni_Dogadjaj_Click(sender,e);
+                Izmeni_Dogadjaj_Click(sender, e);
             }
             else
             {
@@ -247,7 +251,7 @@ namespace Zadatak1
         #region drag/drop textblock
         private void Canvas_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if(isDragging && tb != null)
+            if (isDragging && tb != null)
             {
                 isDragging = false;
                 tb.ReleaseMouseCapture();
@@ -256,7 +260,7 @@ namespace Zadatak1
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if(isDragging && tb != null)
+            if (isDragging && tb != null)
             {
                 Point current = e.GetPosition(canvas);
 
@@ -278,39 +282,37 @@ namespace Zadatak1
         {
             try
             {
-                Dogadjaj d = trv.SelectedItem as Dogadjaj;
-                Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d);
+
+                MenuItem menuItem = (MenuItem)sender;
+                ContextMenu contextMenu = (ContextMenu)menuItem.Parent;
+                TextBlock element = (TextBlock)contextMenu.PlacementTarget;
+
+                Dogadjaj d = TreeNodes[Int32.Parse(element.Name.Replace("e", "")) - 1];
+                Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
                 izmeni.Show();
+
             }
             catch
             {
-                try
-                {
-                    
-                    MenuItem menuItem = (MenuItem)sender;
-                    ContextMenu contextMenu = (ContextMenu)menuItem.Parent;
-                    TextBlock element = (TextBlock)contextMenu.PlacementTarget;
 
-                    Dogadjaj d = TreeNodes[Int32.Parse(element.Name.Replace("e", "")) - 1];
-                    Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d);
+                Dogadjaj d = trv.SelectedItem as Dogadjaj;
+                if (d != null)
+                {
+                    Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
                     izmeni.Show();
                 }
-                catch
-                {
 
-                }
             }
-            
-            
+
         }
         private void Ukloni_Dogadjaj_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
             ContextMenu contextMenu = (ContextMenu)menuItem.Parent;
             TextBlock element = (TextBlock)contextMenu.PlacementTarget;
-            foreach(Dogadjaj d in TreeNodes)
+            foreach (Dogadjaj d in TreeNodes)
             {
-                if(element.Name.Replace("e","") == d.Id.ToString())
+                if (element.Name.Replace("e", "") == d.Id.ToString())
                 {
                     foreach (TextBlock tb in listaPostavljenih)
                     {
@@ -325,10 +327,10 @@ namespace Zadatak1
                         }
                     }
                 }
-                
+
             }
 
-            
+
 
         }
         private void Obrisi_Dogadjaj_Click(object sender, RoutedEventArgs e)
@@ -340,7 +342,7 @@ namespace Zadatak1
                 brojDogadjaja--;
                 if (Postavljeni.Contains(d))
                 {
-                    foreach(TextBlock tb in listaPostavljenih)
+                    foreach (TextBlock tb in listaPostavljenih)
                     {
                         if (tb.Name == "e" + d.Id.ToString())
                         {
@@ -349,8 +351,8 @@ namespace Zadatak1
 
                             Canvas c = (Canvas)tb.Parent;
                             c.Children.Remove(tb);
-                            
-                            MessageBox.Show("Uspesno brisanje eventa!","Brisanje",MessageBoxButton.OK,MessageBoxImage.Information);
+
+                            MessageBox.Show("Uspesno brisanje eventa!", "Brisanje", MessageBoxButton.OK, MessageBoxImage.Information);
                             return;
                         }
                     }
@@ -394,7 +396,7 @@ namespace Zadatak1
         Point p;
         private void Dodaj_Dogadjaj_Click(object sender, RoutedEventArgs e)
         {
-            Dodaj_Dogadjaj dodaj = new Dodaj_Dogadjaj(TreeNodes,ref brojDogadjaja);
+            Dodaj_Dogadjaj dodaj = new Dodaj_Dogadjaj(TreeNodes, ref brojDogadjaja);
             try
             {
                 Canvas c = ((sender as MenuItem).Parent as ContextMenu).PlacementTarget as Canvas;
@@ -406,7 +408,7 @@ namespace Zadatak1
             {
                 dodaj.Show();
             }
-           
+
         }
         private void Dodaj_Closed(object sender, EventArgs e)
         {
@@ -420,6 +422,47 @@ namespace Zadatak1
                 canvas.Children.Add(newElement);
                 Postavljeni.Add(TreeNodes.Last());
                 listaPostavljenih.Add(newElement);
+            }
+        }
+
+        private void Save_XLS_Click(object sender, RoutedEventArgs e)
+        {
+
+            string filePath;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Excel File (*.xls)|*.xls";
+            saveFileDialog.DefaultExt = ".xls";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                filePath = saveFileDialog.FileName;
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage package = new ExcelPackage())
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Lista");
+
+                    int columnIndex = 1;
+                    foreach (DataGridColumn column in dtg.Columns)
+                    {
+                        worksheet.Cells[1, columnIndex].Value = column.Header;
+                        columnIndex++;
+                    }
+
+                    int rowIndex = 2;
+                    foreach (var item in dtg.Items)
+                    {
+                        columnIndex = 1;
+                        foreach (DataGridColumn column in dtg.Columns)
+                        {
+                            var cellValue = (column.GetCellContent(item) as TextBlock).Text;
+                            worksheet.Cells[rowIndex, columnIndex].Value = cellValue;
+                            columnIndex++;
+                        }
+                        rowIndex++;
+                    }
+                    package.SaveAs(new FileInfo(filePath));
+                }
             }
         }
     }

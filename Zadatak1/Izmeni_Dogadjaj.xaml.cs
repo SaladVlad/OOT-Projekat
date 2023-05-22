@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
@@ -12,7 +15,8 @@ namespace Zadatak1
     public partial class Izmeni_Dogadjaj : Window
     {
         public Dogadjaj D { get; set; }
-        public Izmeni_Dogadjaj(Dogadjaj d)
+        public TextBlock postavljen;
+        public Izmeni_Dogadjaj(Dogadjaj d, List<TextBlock> postavljeni)
         {
             InitializeComponent();
             D = d;
@@ -30,6 +34,16 @@ namespace Zadatak1
                 cmbSource.SelectedIndex = 0;
             }
             cmbSource_SelectionChanged(null,null);
+
+            foreach(TextBlock b in postavljeni)
+            {
+                Console.WriteLine("=======" + b.Name.Replace("e", "") + "=======");
+                if(d.Id == int.Parse(b.Name.Replace("e", "")))
+                {
+                    postavljen = b;
+                }
+            }
+
         }
 
         private void btnIzmeni_Click(object sender, RoutedEventArgs e)
@@ -56,6 +70,10 @@ namespace Zadatak1
                 }
                 D.Naziv = tbNaziv.Text;
                 D.Opis = tbOpis.Text;
+
+                if(postavljen != null)
+                     postavljen.Background = new ImageBrush(new BitmapImage(new Uri(D.ImageSource, UriKind.RelativeOrAbsolute)));
+
                 D.Update_List();
 
 
@@ -68,7 +86,7 @@ namespace Zadatak1
             this.Close();
         }
 
-        private void cmbSource_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void cmbSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
             string selected = (cmbSource.SelectedItem as ComboBoxItem).Content.ToString();
