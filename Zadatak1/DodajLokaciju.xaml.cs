@@ -36,29 +36,146 @@ namespace Zadatak1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            lokacija objekat = new lokacija();
-            int br=0;
-            foreach (lokacija b in lokacije) {
-                if (b.Id == tID.Text)
-                    MessageBox.Show("Vec postoji grad sa tim id-em pokusajte ponovo");
-                br = 1;
-                tID.Text = "";
+            if (tGrad.Text != "" && tSediste.Text != "" && tlogo.Text != "" && tID.Text != "")
+            {
+                lokacija objekat = new lokacija();
+                lokacija temp = new lokacija();
+                int br = 0;
+                foreach (lokacija b in lokacije)
+                {
+                    if (b.Id == tID.Text)
+                    {
+                        br = 1;
+                    }
+
                 }
 
-            if (br != 1)
-            {
-                objekat.Id = tID.Text;
+
+
+                if (br != 1)
+                {
+                    objekat.Id = tID.Text;
+                    objekat.Grad = tGrad.Text;
+                    objekat.Drzava = tSediste.Text;
+                    objekat.Logo = UbacivanjePutanje();
+                    MessageBox.Show(UbacivanjePutanje());
+                    lokacije.Add(objekat);
+                }
+                else
+                {
+                    MessageBox.Show("Vec postoji poslje sa zadatim ID-em probajte neku drugu vrednost");
+                    tID.Text = "";
+                }
             }
-            
-            objekat.Grad = tGrad.Text;
-            objekat.Drzava = tSediste.Text;
-            objekat.Logo = tlogo.Text;
-            lokacije.Add(objekat);
+            else
+                MessageBox.Show("Niste uneli neko od polja");
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
+
+        
+        int br2 = 0;
+        private string UbacivanjePutanje()
+        {
+            string logolocation = "";
+            logolocation += "/Logoi/";
+            if (br2 == 1)
+            {
+                logolocation+="novisad";
+            }else if (br2 == 2)
+            {
+                logolocation += "beograd";
+            }
+            else if (br2 == 3)
+            {
+                logolocation += "nis";
+            }
+            else if (br2 == 4)
+            {
+                logolocation += "leskovac";
+            }
+            else if (br2 == 5)
+            {
+                logolocation += "subotica";
+            }
+            else if (br2 == 6)
+            {
+                logolocation += "sremskamitrovica";
+            }
+            else if (br2 == 7)
+            {
+                logolocation += "cacak";
+            }
+            else if (br2 == 8)
+            {
+                logolocation += "jagodina";
+            }
+            else if (br2 == 9)
+            {
+                logolocation += "pirot";
+            }
+            else if (br2 == 10)
+            {
+                logolocation += "novipazar";
+            }
+            logolocation += ".png";
+
+            return logolocation;
+        }
+        private void tlogo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+            if (selectedItem != null)
+            {
+                string selectedCity = selectedItem.Content.ToString();
+
+                
+                switch (selectedCity)
+                {
+                    case "Novi Sad":
+                        br2 = 1;
+                        break;
+                    case "Beograd":
+                        br2 = 2;
+                        break;
+                    case "Nis":
+                        br2 = 3;
+                        break;
+                    case "Leskovac":
+                        br2 = 4;
+                        break;
+                    case "Subotica":
+                        br2 = 5;
+                        break;
+                    case "Sremska Mitrovica":
+                        br2 = 6;
+                        break;
+                    case "Cacak":
+                        br2 = 7;
+                        break;
+                    case "Jagodina":
+                        br2 = 8;
+                        break;
+                    case "Pirot":
+                        br2 = 9;
+                        break;
+                    case "Novi Pazar":
+                        br2 = 10;
+                        break;
+                    case "nista":
+                        br2 = 11;
+                        break;
+                       
+                }
+            }
+          
+        }
+
+        
     }
 }

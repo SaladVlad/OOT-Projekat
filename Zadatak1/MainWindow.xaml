@@ -41,7 +41,7 @@
                  
                         <Canvas.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Dodaj novu lokaciju" Click="MenuItem_Click_1"/>
+                                <MenuItem Header="Dodaj novu lokaciju" Click="MenuItem_Click_1"   />
                             </ContextMenu>
                         </Canvas.ContextMenu>
                         

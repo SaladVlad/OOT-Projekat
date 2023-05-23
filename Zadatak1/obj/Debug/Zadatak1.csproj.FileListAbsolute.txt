@@ -15,3 +15,5 @@ C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1.exe
 C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\Zadatak1.pdb
 C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\DodajLokaciju.g.cs
 C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\DodajLokaciju.baml
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\IzmeniLokaciju.g.cs
+C:\Users\Tomas\source\repos\OOT-Projekat\Zadatak1\obj\Debug\IzmeniLokaciju.baml

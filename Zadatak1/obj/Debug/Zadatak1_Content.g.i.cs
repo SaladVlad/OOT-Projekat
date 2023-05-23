@@ -8,6 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/subotica.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/cacak.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/jagodina.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/novipazar.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/pirot.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/sremskamitrovica.png")]
 
 

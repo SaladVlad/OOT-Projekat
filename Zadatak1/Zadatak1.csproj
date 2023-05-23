@@ -59,6 +59,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="IzmeniLokaciju.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,6 +73,9 @@
     </Compile>
     <Compile Include="DodajLokaciju.xaml.cs">
       <DependentUpon>DodajLokaciju.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IzmeniLokaciju.xaml.cs">
+      <DependentUpon>IzmeniLokaciju.xaml</DependentUpon>
     </Compile>
     <Compile Include="lokacija.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -111,6 +118,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Logoi\subotica.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logoi\cacak.png" />
+    <Resource Include="Logoi\jagodina.png" />
+    <Resource Include="Logoi\novipazar.png" />
+    <Resource Include="Logoi\pirot.png" />
+    <Resource Include="Logoi\sremskamitrovica.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

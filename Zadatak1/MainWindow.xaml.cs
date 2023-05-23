@@ -174,7 +174,8 @@ namespace Zadatak1
 
                 nesto2.HorizontalAlignment = HorizontalAlignment.Center;
 
-                nesto2.PreviewMouseLeftButtonDown += Element_PreviewMouseLeftButtonDown;
+                nesto2.PreviewMouseLeftButtonDown += Nesto2_PreviewMouseLeftButtonDown;
+                nesto2.MouseLeftButtonDown += Nesto2_MouseLeftButtonDown;
                 nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
 
 
@@ -198,7 +199,7 @@ namespace Zadatak1
             else
             {
                 nesto2 = nova;
-                nesto2.PreviewMouseLeftButtonDown += Element_PreviewMouseLeftButtonDown;
+                nesto2.PreviewMouseLeftButtonDown += Nesto2_PreviewMouseLeftButtonDown;
                 nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
 
             }
@@ -208,11 +209,13 @@ namespace Zadatak1
 
         }
         TextBlock nova;
-        private void Element_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+ 
+        private void Nesto2_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             nova = sender as TextBlock;
             DragDrop.DoDragDrop(sender as TextBlock, sender as TextBlock, DragDropEffects.Move);
-         
+            brojac++;
+       
           
            
         }
@@ -258,6 +261,14 @@ namespace Zadatak1
         {
             DodajLokaciju dl = new DodajLokaciju(lokacije,l);
             dl.Show();
+        }
+
+               int brojac=0;
+        private void Nesto2_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+                IzmeniLokaciju iz = new IzmeniLokaciju(lokacije,l,sender as TextBox);
+                iz.Show();
+         
         }
     }
 }
