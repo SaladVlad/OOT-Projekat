@@ -8,7 +8,7 @@
         Title="MainWindow" Height="550" Width="900">
     <Grid>
         <TabControl>
-            
+
             <TabItem Width="70" Height="30">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -17,7 +17,7 @@
                 </TabItem.Header>
 
             </TabItem>
-            
+
             <TabItem Width="70" Height="30">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -37,20 +37,23 @@
                     <TreeView Grid.Column="0" Grid.Row="0" Margin="5" ItemsSource="{Binding TreeNodes}" PreviewMouseLeftButtonDown="TreeView_PreviewMouseLeftButtonDown" MouseMove="TreeView_MouseMove" Name="trv">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type local:Dogadjaj}">
+                                
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="{Binding Id}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"></Label>
                                     <TextBlock Text="{Binding Naziv}" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center">
+                                        
                                         <TextBlock.ContextMenu>
-                                             <ContextMenu>
+                                            <ContextMenu>
                                                 <MenuItem Header="Dodaj novi dogadjaj" Click="Dodaj_Dogadjaj_Click"></MenuItem>
                                                 <MenuItem Header="Izmeni" Click="Izmeni_Dogadjaj_Click"/>
                                                 <MenuItem Header="Obriši događaj" Click="Obrisi_Dogadjaj_Click"/>
                                             </ContextMenu>
                                         </TextBlock.ContextMenu>
+                                        
                                     </TextBlock>
                                     <Image Source="{Binding ImageSource}" Width="30" Height="30" Stretch="Uniform" Name="picture"></Image>
                                 </StackPanel>
-                                
+
                                 <HierarchicalDataTemplate.ItemsSource>
                                     <Binding Path="Atributi" />
                                 </HierarchicalDataTemplate.ItemsSource>
@@ -59,28 +62,26 @@
                                         <TextBlock Text="{Binding}" />
                                     </DataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>
-                                
+
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
                     <!--Using canvas as a container for placed elements-->
-                    <Image Source="/Images/serbia-map (1).jpg" Stretch="None" Margin="21,1,22,1" AllowDrop="True" DragEnter="Image_DragEnter" Drop="Image_Drop" Grid.Column="1">
+                    <Image Source="/Images/serbia-map (1).jpg" Stretch="None" Margin="21,1,22,1" AllowDrop="True" DragEnter="Image_DragEnter" Drop="Image_Drop" Grid.Column="1" Tag="image">
                         <Image.ContextMenu>
                             <ContextMenu Name="cmImage">
                                 <MenuItem Header="Dodaj događaj" Click="Dodaj_Dogadjaj_Click"></MenuItem>
                             </ContextMenu>
                         </Image.ContextMenu>
                     </Image>
-                    <Canvas Name="canvas" Grid.Column="1" Width="360" Height="450" PreviewMouseLeftButtonUp="Canvas_PreviewMouseLeftButtonUp" MouseMove="Canvas_MouseMove">
-                    </Canvas>
-
+                    <Canvas Name="canvas" Grid.Column="1" Width="360" Height="450" PreviewMouseLeftButtonUp="Canvas_PreviewMouseLeftButtonUp" MouseMove="Canvas_MouseMove"/>
                     <WrapPanel Grid.Row="1" Grid.Column="0">
                         <Button Width="120" Height="20" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="BtnSacuvajDogadjaje_Click">Sacuvaj izmene u fajl</Button>
                     </WrapPanel>
-                        
+
                 </Grid>
             </TabItem>
-                
+
             <TabItem Width="70" Height="30">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -100,7 +101,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Naziv" Binding="{Binding Naziv}"/>
-                            <DataGridTextColumn Header="Opis" Binding="{Binding Naziv}"/>
+                            <DataGridTextColumn Header="Opis" Binding="{Binding Opis}"/>
                             <DataGridTextColumn Header="Datum Odrzavanja" Binding="{Binding DatumOdrzavanja}"/>
                             <DataGridTextColumn Header="Lokacija događaja" Binding="{Binding}"></DataGridTextColumn>
                         </DataGrid.Columns>
@@ -108,7 +109,7 @@
                     <Button Grid.Row="1" Click="Save_XLS_Click">Save as .xls</Button>
                 </Grid>
             </TabItem>
-            
+
         </TabControl>
     </Grid>
 </Window>

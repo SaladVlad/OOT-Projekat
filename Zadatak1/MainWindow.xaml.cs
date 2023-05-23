@@ -8,10 +8,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-//FOR WRITING TO AN EXCEL FILE
+
+//FOR WRITING TO AN EXCEL FILE//
 using Microsoft.Win32;
 using OfficeOpenXml;
-
+//----------------------------//
+/*Disclaimer: used a NuGet package inside solution, install before using "Save to .xls" function.*/
 
 namespace Zadatak1
 {
@@ -20,9 +22,11 @@ namespace Zadatak1
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region PR40/2021
+
+        #region window and lists init
         public ObservableCollection<Dogadjaj> TreeNodes { get; set; }
         public ObservableCollection<Dogadjaj> Postavljeni { get; set; }
-        public int brojDogadjaja = 0;
         public List<TextBlock> listaPostavljenih { get; set; }
 
         Point startPoint = new Point();
@@ -38,8 +42,9 @@ namespace Zadatak1
             ContextMenuService.SetIsEnabled(cmImage, true);
 
         }
+        #endregion
 
-        #region loading/saving from file
+        #region loading/saving from/to  file
         public ObservableCollection<Dogadjaj> ReadDogadjaji()
         {
             ObservableCollection<Dogadjaj> dogadjaji = new ObservableCollection<Dogadjaj>();
@@ -54,7 +59,6 @@ namespace Zadatak1
 
                         Dogadjaj d = new Dogadjaj(Int32.Parse(s[0]), s[1], s[2], s[3], s[4]);
                         dogadjaji.Add(d);
-                        brojDogadjaja++;
                     }
                 }
             }
@@ -114,7 +118,7 @@ namespace Zadatak1
                 TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
 
                 // Find the data behind the TreeViewItem
-                try
+                if (treeViewItem != null)
                 {
                     Dogadjaj dogadjaj = (Dogadjaj)treeView.ItemContainerGenerator.
                     ItemFromContainer(treeViewItem);
@@ -122,12 +126,6 @@ namespace Zadatak1
                     // Initialize the drag & drop operation
                     DataObject dragData = new DataObject("myFormat", dogadjaj);
                     DragDrop.DoDragDrop(treeViewItem, dragData, DragDropEffects.Move);
-                }
-                catch (ArgumentNullException)
-                {
-                }
-                catch (InvalidCastException)
-                {
                 }
 
             }
@@ -206,7 +204,6 @@ namespace Zadatak1
             obrisi.Header = "Obriši";
             obrisi.Click += Obrisi_Dogadjaj_Click;
 
-
             contextMenu.Items.Add(izmeni);
             contextMenu.Items.Add(ukloni);
             contextMenu.Items.Add(obrisi);
@@ -214,13 +211,10 @@ namespace Zadatak1
             newElement.ContextMenu = contextMenu;
             ContextMenuService.SetIsEnabled(newElement, true);
 
+            //setting up event for drag&drop and double click
             newElement.PreviewMouseLeftButtonDown += Element_PreviewMouseLeftButtonDown;
 
-
-
-            //const string baseDir = @"E:\Visual Studio Projects\Zadatak1\Zadatak1";
-            //string fileName = Path.Combine(baseDir,dogadjaj.ImageSource);
-
+            //asigning a new ImageBrush object for TextBlock background
             ImageBrush imageBrush = new ImageBrush();
             Uri imageUri = new Uri(d.ImageSource, UriKind.Relative);
             imageBrush.ImageSource = new BitmapImage(imageUri);
@@ -278,32 +272,52 @@ namespace Zadatak1
 
         #endregion
 
+        #region adding/removing events
         private void Izmeni_Dogadjaj_Click(object sender, RoutedEventArgs e)
         {
-            try
+
+            if(sender is TextBlock)
             {
-
-                MenuItem menuItem = (MenuItem)sender;
-                ContextMenu contextMenu = (ContextMenu)menuItem.Parent;
-                TextBlock element = (TextBlock)contextMenu.PlacementTarget;
-
-                Dogadjaj d = TreeNodes[Int32.Parse(element.Name.Replace("e", "")) - 1];
-                Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
-                izmeni.Show();
-
-            }
-            catch
-            {
-
-                Dogadjaj d = trv.SelectedItem as Dogadjaj;
-                if (d != null)
+                TextBlock element = (TextBlock)sender;
+                if (sender != null && element.Name.Contains("e"))
                 {
-                    Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
-                    izmeni.Show();
+                    foreach (Dogadjaj d in TreeNodes)
+                    {
+                        if (element.Name.Replace("e", "") == d.Id.ToString())
+                        {
+                            Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
+                            izmeni.Show();
+                        }
+                    }
                 }
-
             }
+            else
+            {
+                MenuItem menuItem = sender as MenuItem;
+                ContextMenu contextMenu = (ContextMenu)menuItem?.Parent;
+                TextBlock element = (TextBlock)contextMenu?.PlacementTarget;
 
+                if (element != null && element.Name.Contains("e"))
+                {
+                    foreach (Dogadjaj d in TreeNodes)
+                    {
+                        if (element.Name.Replace("e", "") == d.Id.ToString())
+                        {
+                            Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
+                            izmeni.Show();
+                        }
+                    }
+                }
+                else
+                {
+                    Dogadjaj d = trv.SelectedItem as Dogadjaj;
+                    if (d != null)
+                    {
+                        Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
+                        izmeni.Show();
+                    }
+                }
+            }
         }
         private void Ukloni_Dogadjaj_Click(object sender, RoutedEventArgs e)
         {
@@ -312,108 +326,72 @@ namespace Zadatak1
             TextBlock element = (TextBlock)contextMenu.PlacementTarget;
             foreach (Dogadjaj d in TreeNodes)
             {
-                if (element.Name.Replace("e", "") == d.Id.ToString())
-                {
-                    foreach (TextBlock tb in listaPostavljenih)
-                    {
-                        if (tb.Name == "e" + d.Id.ToString())
-                        {
-                            Postavljeni.Remove(d);
-                            listaPostavljenih.Remove(tb);
-
-                            Canvas c = (Canvas)tb.Parent;
-                            c.Children.Remove(tb);
-                            return;
-                        }
-                    }
-                }
+                if (element.Name.Replace("e", "") == d.Id.ToString()) RemoveFromCanvas(d);
 
             }
-
-
-
         }
         private void Obrisi_Dogadjaj_Click(object sender, RoutedEventArgs e)
         {
-            try
+            MenuItem menuItem = sender as MenuItem;
+            ContextMenu contextMenu = menuItem?.Parent as ContextMenu;
+            Image image = contextMenu?.PlacementTarget as Image;
+
+            if (image != null && image.Tag?.ToString() == "image")
+            {
+                TextBlock element = (TextBlock)contextMenu.PlacementTarget;
+
+                Dogadjaj d = TreeNodes[Int32.Parse(element.Name.Replace("e", "")) - 1];
+                TreeNodes.Remove(d);
+                if (Postavljeni.Contains(d)) RemoveFromCanvas(d);
+
+            }
+            else
             {
                 Dogadjaj d = trv.SelectedItem as Dogadjaj;
                 TreeNodes.Remove(d);
-                brojDogadjaja--;
-                if (Postavljeni.Contains(d))
-                {
-                    foreach (TextBlock tb in listaPostavljenih)
-                    {
-                        if (tb.Name == "e" + d.Id.ToString())
-                        {
-                            Postavljeni.Remove(d);
-                            listaPostavljenih.Remove(tb);
-
-                            Canvas c = (Canvas)tb.Parent;
-                            c.Children.Remove(tb);
-
-                            MessageBox.Show("Uspesno brisanje eventa!", "Brisanje", MessageBoxButton.OK, MessageBoxImage.Information);
-                            return;
-                        }
-                    }
-                }
+                if (Postavljeni.Contains(d)) RemoveFromCanvas(d);
             }
-            catch
+        }
+        private void RemoveFromCanvas(Dogadjaj d)
+        {
+            foreach (TextBlock tb in listaPostavljenih)
             {
-                try
+                if (tb.Name == "e" + d.Id.ToString())
                 {
+                    Postavljeni.Remove(d);
+                    listaPostavljenih.Remove(tb);
 
-                    MenuItem menuItem = (MenuItem)sender;
-                    ContextMenu contextMenu = (ContextMenu)menuItem.Parent;
-                    TextBlock element = (TextBlock)contextMenu.PlacementTarget;
-
-                    Dogadjaj d = TreeNodes[Int32.Parse(element.Name.Replace("e", "")) - 1];
-                    TreeNodes.Remove(d);
-                    if (Postavljeni.Contains(d))
-                    {
-                        foreach (TextBlock tb in listaPostavljenih)
-                        {
-                            if (tb.Name == "e" + d.Id.ToString())
-                            {
-                                Postavljeni.Remove(d);
-                                listaPostavljenih.Remove(tb);
-
-                                Canvas c = (Canvas)tb.Parent;
-                                c.Children.Remove(tb);
-
-                                MessageBox.Show("Uspesno brisanje eventa!", "Brisanje", MessageBoxButton.OK, MessageBoxImage.Information);
-                                return;
-                            }
-                        }
-                    }
-                }
-                catch
-                {
+                    Canvas c = (Canvas)tb.Parent;
+                    c.Children.Remove(tb);
+                    return;
                 }
             }
         }
 
         Point p;
+        private int before;
         private void Dodaj_Dogadjaj_Click(object sender, RoutedEventArgs e)
         {
-            Dodaj_Dogadjaj dodaj = new Dodaj_Dogadjaj(TreeNodes, ref brojDogadjaja);
-            try
+            Dodaj_Dogadjaj dodaj = new Dodaj_Dogadjaj(TreeNodes);
+
+            MenuItem menuItem = sender as MenuItem;
+            ContextMenu contextMenu = menuItem?.Parent as ContextMenu;
+            Image image = contextMenu?.PlacementTarget as Image;
+
+            if (image != null && image.Tag?.ToString() == "image")
             {
-                Canvas c = ((sender as MenuItem).Parent as ContextMenu).PlacementTarget as Canvas;
                 p = Mouse.GetPosition(canvas);
                 dodaj.Closed += Dodaj_Closed;
             }
-            catch { }
-            finally
-            {
-                dodaj.Show();
-            }
+            before = TreeNodes.Count;
+            dodaj.Show();
 
         }
         private void Dodaj_Closed(object sender, EventArgs e)
         {
-            if (TreeNodes.Count != brojDogadjaja)
+            if (before < TreeNodes.Count)
             {
+
                 TextBlock newElement = Generate_TextBlock(TreeNodes.Last());
 
                 Canvas.SetTop(newElement, p.Y);
@@ -424,6 +402,8 @@ namespace Zadatak1
                 listaPostavljenih.Add(newElement);
             }
         }
+
+        #endregion
 
         private void Save_XLS_Click(object sender, RoutedEventArgs e)
         {
@@ -465,5 +445,7 @@ namespace Zadatak1
                 }
             }
         }
+
+        #endregion
     }
 }

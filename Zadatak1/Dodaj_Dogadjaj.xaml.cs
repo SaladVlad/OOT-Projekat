@@ -21,12 +21,10 @@ namespace Zadatak1
     public partial class Dodaj_Dogadjaj : Window
     {
         public ObservableCollection<Dogadjaj> Dogadjaji { get; set; }
-        int brDogadjaja;
-        public Dodaj_Dogadjaj(ObservableCollection<Dogadjaj> dogadjaji, ref int brDogadjaja)
+        public Dodaj_Dogadjaj(ObservableCollection<Dogadjaj> dogadjaji)
         {
             InitializeComponent();
             Dogadjaji = dogadjaji;
-            this.brDogadjaja = brDogadjaja;
 
         }
 
@@ -46,8 +44,12 @@ namespace Zadatak1
             else
             {
                 string[] ss = tbDatum.Text.Split('.');
-
-                if (int.TryParse(ss[0], out _) && int.TryParse(ss[1], out _) && int.TryParse(ss[2], out _) && (ss.Length == 4 || ss.Length == 3))
+                if(ss.Length!=4 && ss.Length != 3)
+                {
+                    MessageBox.Show("Ovaj datum nije validan!", "Greška!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return;
+                }
+                if (int.TryParse(ss[0], out _) && int.TryParse(ss[1], out _) && int.TryParse(ss[2], out _))
                 {
 
                     int dan, mesec, godina;
@@ -76,7 +78,6 @@ namespace Zadatak1
                             }
                         }
                         Dogadjaji.Add(d);
-                        brDogadjaja++;
                     }
                     else
                     {
