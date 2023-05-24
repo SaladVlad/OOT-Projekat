@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
-
+using System.IO;
 namespace Zadatak1
 {
     public class lokacija : INotifyPropertyChanged

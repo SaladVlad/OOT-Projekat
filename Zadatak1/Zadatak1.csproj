@@ -124,6 +124,8 @@
     <Resource Include="Logoi\jagodina.png" />
     <Resource Include="Logoi\novipazar.png" />
     <Resource Include="Logoi\pirot.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Logoi\sremskamitrovica.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

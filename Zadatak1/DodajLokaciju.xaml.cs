@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,10 +23,11 @@ namespace Zadatak1
     public partial class DodajLokaciju : Window
     {
         ObservableCollection<lokacija> lokacije = new ObservableCollection<lokacija>();
+        List<lokacija> l = new List<lokacija>();
         public DodajLokaciju(ObservableCollection<lokacija> obscolection , List<lokacija> lista)
         {
             
-            List<lokacija> l = new List<lokacija>();
+           
             lokacije = obscolection;
             l = lista;
           
@@ -58,8 +60,18 @@ namespace Zadatak1
                     objekat.Grad = tGrad.Text;
                     objekat.Drzava = tSediste.Text;
                     objekat.Logo = UbacivanjePutanje();
-                    MessageBox.Show(UbacivanjePutanje());
                     lokacije.Add(objekat);
+
+                    string filePath = "Podaci.txt";
+
+                    using (StreamWriter writer = new StreamWriter(filePath))
+                    {
+                        foreach (lokacija item in lokacije)
+                        {
+                            writer.WriteLine(item.Id + ".  " + item.Grad + "  " + item.Drzava + "  " + "LogoPath:" + item.Logo);
+                        }
+                    }
+
                 }
                 else
                 {

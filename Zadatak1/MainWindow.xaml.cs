@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,17 +32,17 @@ namespace Zadatak1
      
         Point startPoint = new Point();
         List<lokacija> l = new List<lokacija>();
-      
+
         public MainWindow()
         {
             this.DataContext = this;
-          
-            l.Add(new lokacija { Id = "1", Grad = "Novi Sad", Drzava = "Srbija", Logo = "/Logoi/novisad.png" } );
+
+            l.Add(new lokacija { Id = "1", Grad = "Novi Sad", Drzava = "Srbija", Logo = "/Logoi/novisad.png" });
             l.Add(new lokacija { Id = "2", Grad = "Beograd", Drzava = "Srbija", Logo = "/Logoi/beograd.png" });
             l.Add(new lokacija { Id = "3", Grad = "Nis", Drzava = "Srbija", Logo = "/Logoi/nis.png" });
             l.Add(new lokacija { Id = "4", Grad = "Subotica", Drzava = "Srbija", Logo = "/Logoi/subotica.png" });
             l.Add(new lokacija { Id = "5", Grad = "Leskovac", Drzava = "Srbija", Logo = "/Logoi/leskovac.png" });
-
+ 
 
             lokacije = new ObservableCollection<lokacija>(l);
             menuItem1.Header = "Ukloni ikonicu sa mape";
@@ -50,44 +51,24 @@ namespace Zadatak1
             menuItem2.Click += MenuItem_Click;
 
 
-            contextMenu.Items.Add(menuItem1);
-            contextMenu.Items.Add(menuItem2);
-            InitializeComponent();
+            string filePath = "Podaci.txt";
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (lokacija item in lokacije)
+                {
+                    writer.WriteLine(item.Id + ".  " + item.Grad + "  " + item.Drzava + "  " + "LogoPath:" + item.Logo);
+                }
+            }
+                contextMenu.Items.Add(menuItem1);
+                contextMenu.Items.Add(menuItem2);
+                InitializeComponent();
+            
         }
         public ObservableCollection<lokacija> lokacije
         {
             get;
             set;
-        }
-        public class AutoResizedCanvas : Canvas
-        {
-            protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint)
-            {
-                base.MeasureOverride(constraint);
-                double width = base
-                    .InternalChildren
-                    .OfType<UIElement>()
-                    .Where(i => i.GetValue(Canvas.LeftProperty) != null)
-                    .Max(i => i.DesiredSize.Width + (double)i.GetValue(Canvas.LeftProperty));
-
-                if (Double.IsNaN(width))
-                {
-                    width = 0;
-                }
-
-                double height = base
-                    .InternalChildren
-                    .OfType<UIElement>()
-                    .Where(i => i.GetValue(Canvas.TopProperty) != null)
-                    .Max(i => i.DesiredSize.Height + (double)i.GetValue(Canvas.TopProperty));
-
-                if (Double.IsNaN(height))
-                {
-                    height = 0;
-                }
-
-                return new Size(width, height);
-            }
         }
 
         private void ListView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -122,8 +103,8 @@ namespace Zadatak1
                     if (itemToDisable.IsEnabled == true)
                     {
                         // Initialize the drag & drop operation
-                        lokacija student = (lokacija)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-                        DataObject dragData = new DataObject("myFormat", student);
+                        lokacija podaci = (lokacija)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                        DataObject dragData = new DataObject("myFormat", podaci);
                         DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
                     }
                 }
@@ -161,17 +142,16 @@ namespace Zadatak1
 
             
                 Point dropPosition = e.GetPosition(slika);
-                lokacija student = e.Data.GetData("myFormat") as lokacija;
+                lokacija podaci = e.Data.GetData("myFormat") as lokacija;
             TextBlock nesto2 = new TextBlock();
-
-            if (student != null)
+            if (podaci != null)
             {
 
            
                 //---------------------------------
 
 
-                nesto2.Text = student.Grad;
+                nesto2.Text = podaci.Grad;
 
                 nesto2.HorizontalAlignment = HorizontalAlignment.Center;
 
@@ -183,7 +163,7 @@ namespace Zadatak1
 
 
                 Image image = new Image();
-                image.Source = new BitmapImage(new Uri(student.Logo, UriKind.RelativeOrAbsolute));
+                image.Source = new BitmapImage(new Uri(podaci.Logo, UriKind.RelativeOrAbsolute));
                 image.Width = 30;
                 image.Height = 30;
                 InlineUIContainer inlineContainer = new InlineUIContainer(image);
@@ -259,6 +239,15 @@ namespace Zadatak1
                 }
                 lokacije.Remove(opa);
                 slika.Children.Remove(desno);
+                string filePath = "Podaci.txt";
+
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    foreach (lokacija item in lokacije)
+                    {
+                        writer.WriteLine(item.Id + ".  " + item.Grad + "  " + item.Drzava + "  " + "LogoPath:" + item.Logo);
+                    }
+                }
 
             }
 

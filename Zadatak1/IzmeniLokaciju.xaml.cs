@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -113,6 +114,16 @@ namespace Zadatak1
             image.Height = 30;
             InlineUIContainer inlineContainer = new InlineUIContainer(image);
             tekstboks.Inlines.Add(inlineContainer);
+
+            string filePath = "Podaci.txt";
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (lokacija item in lokacije)
+                {
+                    writer.WriteLine(item.Id + ".  " + item.Grad + "  " + item.Drzava + "  " + "LogoPath:" + item.Logo);
+                }
+            }
 
         }
         int br2 = 0;
