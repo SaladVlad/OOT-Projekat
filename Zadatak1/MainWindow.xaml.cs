@@ -42,6 +42,7 @@ namespace Zadatak1
             l.Add(new lokacija { Id = "4", Grad = "Subotica", Drzava = "Srbija", Logo = "/Logoi/subotica.png" });
             l.Add(new lokacija { Id = "5", Grad = "Leskovac", Drzava = "Srbija", Logo = "/Logoi/leskovac.png" });
 
+
             lokacije = new ObservableCollection<lokacija>(l);
             menuItem1.Header = "Ukloni ikonicu sa mape";
             menuItem1.Click += MenuItem_Click;
@@ -154,14 +155,14 @@ namespace Zadatak1
             }
         }
 
-        TextBlock nesto2;
+      
         private void slika_Drop(object sender, DragEventArgs e)
         {
 
             
                 Point dropPosition = e.GetPosition(slika);
                 lokacija student = e.Data.GetData("myFormat") as lokacija;
-          nesto2 = new TextBlock();
+            TextBlock nesto2 = new TextBlock();
 
             if (student != null)
             {
@@ -177,6 +178,8 @@ namespace Zadatak1
                 nesto2.PreviewMouseLeftButtonDown += Nesto2_PreviewMouseLeftButtonDown;
                 nesto2.MouseLeftButtonDown += Nesto2_MouseLeftButtonDown;
                 nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
+                nesto2.MouseDown += Nesto2_MouseWheel;
+
 
 
                 Image image = new Image();
@@ -201,6 +204,7 @@ namespace Zadatak1
                 nesto2 = nova;
                 nesto2.PreviewMouseLeftButtonDown += Nesto2_PreviewMouseLeftButtonDown;
                 nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
+              
 
             }
             Canvas.SetLeft(nesto2, dropPosition.X);
@@ -209,15 +213,18 @@ namespace Zadatak1
 
         }
         TextBlock nova;
+    
+        private void Nesto2_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+          
+                nova = sender as TextBlock;
+                DragDrop.DoDragDrop(sender as TextBlock, sender as TextBlock, DragDropEffects.Move);
  
+        
+        }
         private void Nesto2_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            nova = sender as TextBlock;
-            DragDrop.DoDragDrop(sender as TextBlock, sender as TextBlock, DragDropEffects.Move);
-            brojac++;
-       
-          
-           
+         
         }
         TextBlock desno;
         private void nesto2_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -263,12 +270,17 @@ namespace Zadatak1
             dl.Show();
         }
 
-               int brojac=0;
-        private void Nesto2_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+            
+
+        private void Nesto2_MouseWheel(object sender, MouseButtonEventArgs e)
         {
-                IzmeniLokaciju iz = new IzmeniLokaciju(lokacije,l,sender as TextBox);
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            {
+
+                TextBlock textBlock = sender as TextBlock;
+                IzmeniLokaciju iz = new IzmeniLokaciju(lokacije, l, textBlock);
                 iz.Show();
-         
+            }
         }
     }
 }

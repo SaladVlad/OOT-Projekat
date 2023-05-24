@@ -26,7 +26,7 @@
         <Label Grid.Row="2" Grid.Column="0"  Margin="10">Sedište:</Label>
         <Label Grid.Row="3" Grid.Column="0"  Margin="10">Logo grada:</Label>
 
-        <TextBox Name="tID" Grid.Row="0" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Name="dID" Grid.Row="0" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
         <TextBox Name="tGrad" Grid.Row="1" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
         <TextBox Name="tSediste"  Grid.Row="2" Grid.Column="1" Margin="10" Grid.ColumnSpan="2"></TextBox>
         <ComboBox Name="tlogo"  Grid.Row="3" Grid.Column="1" Margin="10" Grid.ColumnSpan="2" SelectedIndex="0" SelectionChanged="tlogo_SelectionChanged">
@@ -43,8 +43,8 @@
             <ComboBoxItem VerticalAlignment="Center">Nista</ComboBoxItem>
         </ComboBox>
 
-        <Button Grid.Row="5" Margin="10 10 10 10" Grid.ColumnSpan="2" FontWeight="Bold" Click="Button_Click">Dodaj</Button>
-        <Button  Grid.Row="5" Grid.Column="2" Margin="10 10 10 10" Grid.ColumnSpan="2" FontWeight="Bold" Click="Button_Click_1">Otkazi</Button>
+        <Button Grid.Row="5" Margin="10 10 10 10" Grid.ColumnSpan="2" FontWeight="Bold" Click="Button_Click_1">Izmeni</Button>
+        <Button  Grid.Row="5" Grid.Column="2" Margin="10 10 10 10" Grid.ColumnSpan="2" FontWeight="Bold" Click="Button_Click">Otkazi</Button>
 
     </Grid>
 </Window>
