@@ -5,17 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zadatak1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="900">
+        Title="MainWindow" Height="550" Width="900" Closed="Window_Closed">
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="TreeNodeCollectionViewSource" Source="{Binding TreeNodes}"></CollectionViewSource>
+    </Window.Resources>
+    
     <Grid>
         <TabControl>
 
             <TabItem Width="70" Height="30">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock>Tab 1</TextBlock>
+                        <TextBlock>Lokacije</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
 
+                    <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding lokacije}" PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" MouseMove="ListView_MouseMove" x:Name="listapogleda" SelectionMode="Single" >
+                        <ListView.ItemTemplate >
+                            <DataTemplate >
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding Id}" FontWeight="Bold"  />
+                                    <TextBlock Text="." />
+                                    <TextBlock Text="{Binding Grad}" />
+                                    <TextBlock Text=" " />
+                                    <TextBlock Text="{Binding Drzava}"   />
+                                    <TextBlock Text="  " />
+                                    <Image Source="{Binding Logo}" Width="40" Height="40" />
+                                    <TextBlock Text="  " />
+                                </WrapPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Image Grid.Column="1"  Source="/Logoi/serbia-map.jpg"   x:Name="Slika" />
+                    <Canvas Background="Transparent" x:Name="slika" Grid.Column="1" AllowDrop="True"  DragEnter="slika_DragEnter" Drop="slika_Drop">
+
+                        <Canvas.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Dodaj novu lokaciju" Click="MenuItem_Click_1"/>
+                            </ContextMenu>
+                        </Canvas.ContextMenu>
+
+                        <TextBlock x:Name="resen"></TextBlock>
+                    </Canvas>
+                </Grid>
             </TabItem>
 
             <TabItem Width="70" Height="30">
@@ -37,11 +75,11 @@
                     <TreeView Grid.Column="0" Grid.Row="0" Margin="5" ItemsSource="{Binding TreeNodes}" PreviewMouseLeftButtonDown="TreeView_PreviewMouseLeftButtonDown" MouseMove="TreeView_MouseMove" Name="trv">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type local:Dogadjaj}">
-                                
+
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="{Binding Id}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"></Label>
                                     <TextBlock Text="{Binding Naziv}" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center">
-                                        
+
                                         <TextBlock.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Header="Dodaj novi dogadjaj" Click="Dodaj_Dogadjaj_Click"></MenuItem>
@@ -49,7 +87,7 @@
                                                 <MenuItem Header="Obriši događaj" Click="Obrisi_Dogadjaj_Click"/>
                                             </ContextMenu>
                                         </TextBlock.ContextMenu>
-                                        
+
                                     </TextBlock>
                                     <Image Source="{Binding ImageSource}" Width="30" Height="30" Stretch="Uniform" Name="picture"></Image>
                                 </StackPanel>
@@ -67,7 +105,7 @@
                         </TreeView.ItemTemplate>
                     </TreeView>
                     <!--Using canvas as a container for placed elements-->
-                    <Image Source="/Images/serbia-map (1).jpg" Stretch="None" Margin="21,1,22,1" AllowDrop="True" DragEnter="Image_DragEnter" Drop="Image_Drop" Grid.Column="1" Tag="image">
+                    <Image Source="/Images/serbia-map (1).jpg" Stretch="None" Margin="21,1,21,1" AllowDrop="True" DragEnter="Image_DragEnter" Drop="Image_Drop" Grid.Column="1" Tag="image">
                         <Image.ContextMenu>
                             <ContextMenu Name="cmImage">
                                 <MenuItem Header="Dodaj događaj" Click="Dodaj_Dogadjaj_Click"></MenuItem>
@@ -88,6 +126,7 @@
                         <TextBlock>Tab 3</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
+
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="8*"></RowDefinition>
@@ -97,17 +136,33 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Name="dtg" Grid.Row="0" Grid.ColumnSpan="2" ItemsSource="{Binding TreeNodes}" AutoGenerateColumns="False">
+                    
+                    <DataGrid Name="dtg" Grid.Row="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource TreeNodeCollectionViewSource}}" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Naziv" Binding="{Binding Naziv}"/>
                             <DataGridTextColumn Header="Opis" Binding="{Binding Opis}"/>
                             <DataGridTextColumn Header="Datum Odrzavanja" Binding="{Binding DatumOdrzavanja}"/>
-                            <DataGridTextColumn Header="Lokacija događaja" Binding="{Binding}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Lokacija događaja" Binding="{Binding Lokacija}"></DataGridTextColumn>
                         </DataGrid.Columns>
+
+                        <DataGrid.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </DataGrid.GroupStyle>
+                        
                     </DataGrid>
                     <Button Grid.Row="1" Click="Save_XLS_Click">Save as .xls</Button>
+                    <CheckBox Grid.Row="1" Grid.Column="1" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked">Grupisi</CheckBox>
                 </Grid>
+                
             </TabItem>
 
         </TabControl>

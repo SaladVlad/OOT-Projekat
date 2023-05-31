@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zadatak1"
         mc:Ignorable="d"
-        Title="Izmeni Događaj" Height="300" Width="400" ResizeMode="NoResize">
+        Title="Izmeni Događaj" Height="350" Width="400" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -27,6 +28,7 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Opis:</Label>
         <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Datum:</Label>
         <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Izvor slike:</Label>
+        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">Lokacija:</Label>
 
         <TextBox Name="tbID" Grid.Row="0" Grid.Column="1" Margin="8" Grid.ColumnSpan="2"></TextBox>
         <TextBox Name="tbNaziv" Grid.Row="1" Grid.Column="1" Margin="8" Grid.ColumnSpan="2"></TextBox>
@@ -40,8 +42,11 @@
             <ComboBoxItem>s4</ComboBoxItem>
         </ComboBox>
 
-        <Button Name="btnIzmeni" Grid.Row="5" Margin="20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnIzmeni_Click">Izmeni</Button>
-        <Button Name="btnOtkazi" Grid.Row="5" Grid.Column="2" Margin="50 20 20 20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnOtkazi_Click">Otkazi</Button>
+        <ComboBox Name="cmbLokacija" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin="8" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ItemsSource="{Binding Gradovi}">
+        </ComboBox>
+
+        <Button Name="btnIzmeni" Grid.Row="6" Margin="20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnIzmeni_Click">Izmeni</Button>
+        <Button Name="btnOtkazi" Grid.Row="6" Grid.Column="2" Margin="50 20 20 20" Grid.ColumnSpan="2" FontWeight="Bold" Click="btnOtkazi_Click">Otkazi</Button>
 
         <Image Name="img" Grid.Column="3" Margin="7,10,7,10" Grid.RowSpan="3" Grid.Row="1"/>
 

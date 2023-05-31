@@ -16,19 +16,22 @@ namespace Zadatak1
 
         private Image slika;
 
-        public Dogadjaj(int id, string naziv, string opis, string datumOdrzavanja, string imageSource)
+        private string lokacija;
+
+        public Dogadjaj(int id, string naziv, string opis, string datumOdrzavanja, string imageSource, string lokacija)
         {
             this.Id = id;
             this.Naziv = naziv;
             this.Opis = opis;
             this.DatumOdrzavanja = datumOdrzavanja;
             this.imageSource = imageSource;
+            this.lokacija = lokacija;
 
             atributi = new ObservableCollection<string>
             {
-                naziv,
                 opis,
-                datumOdrzavanja
+                datumOdrzavanja,
+                lokacija
             };
 
             this.Slika = new Image();
@@ -41,15 +44,15 @@ namespace Zadatak1
 
         public override string ToString()
         {
-            return id + "," + naziv + "," + opis + "," + datumOdrzavanja + "," + imageSource;
+            return id + "," + naziv + "," + opis + "," + datumOdrzavanja + "," + imageSource + "," + lokacija;
         }
 
         public void Update_List()
         {
             atributi.Clear();
-            atributi.Add(Naziv);
             atributi.Add(Opis);
             atributi.Add(DatumOdrzavanja);
+            atributi.Add(Lokacija);
             OnPropertyChanged("Atributi");
         }
 
@@ -114,15 +117,20 @@ namespace Zadatak1
                 if (this.slika != value) { this.slika = value; this.OnPropertyChanged("Slika"); }
             }
         }
+
+        public string Lokacija {
+            get { return this.lokacija; }
+            set
+            {
+                if (this.lokacija != value) { this.lokacija = value; this.OnPropertyChanged("Lokacija"); }
+            }
+        }
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string name)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 

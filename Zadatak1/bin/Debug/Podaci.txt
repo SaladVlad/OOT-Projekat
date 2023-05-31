@@ -1,0 +1,6 @@
+1.  Novi Sad  Srbija  LogoPath:/Logoi/novisad.png
+2.  Beograd  Srbija  LogoPath:/Logoi/beograd.png
+3.  Nis  Srbija  LogoPath:/Logoi/nis.png
+4.  Subotica  Srbija  LogoPath:/Logoi/subotica.png
+5.  Leskovac  Srbija  LogoPath:/Logoi/leskovac.png
+44.  Novi Pazar  LOL  LogoPath:/Logoi/novipazar.png

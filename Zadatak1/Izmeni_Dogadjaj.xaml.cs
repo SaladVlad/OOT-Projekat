@@ -15,16 +15,24 @@ namespace Zadatak1
     public partial class Izmeni_Dogadjaj : Window
     {
         public Dogadjaj D { get; set; }
+        public ObservableCollection<string> Gradovi { get; set; }
         public TextBlock postavljen;
-        public Izmeni_Dogadjaj(Dogadjaj d, List<TextBlock> postavljeni)
+        public Izmeni_Dogadjaj(Dogadjaj d, List<TextBlock> postavljeni,ObservableCollection<lokacija> lokacije)
         {
             InitializeComponent();
+            DataContext = this;
+            Gradovi = new ObservableCollection<string>();
+            foreach (lokacija l in lokacije)
+            {
+                Gradovi.Add(l.Grad);
+            }
             D = d;
             tbID.Text = D.Id.ToString();
             tbID.IsEnabled = false;
             tbNaziv.Text = D.Naziv;
             tbOpis.Text = D.Opis;
             tbDatum.Text = D.DatumOdrzavanja;
+            cmbLokacija.SelectedIndex = 0;
             try
             {
                 cmbSource.SelectedIndex = int.Parse(D.ImageSource.Replace("Images/s", "").Remove(1));
@@ -56,10 +64,9 @@ namespace Zadatak1
             else
             {
                 string[] ss = tbDatum.Text.Split('.');
-                int check;
                 try
                 {
-                    if (Int32.TryParse(ss[0], out check) && Int32.TryParse(ss[1], out check) && Int32.TryParse(ss[2], out check))
+                    if (Int32.TryParse(ss[0], out _) && Int32.TryParse(ss[1], out _) && Int32.TryParse(ss[2], out _))
                     {
                         D.DatumOdrzavanja = tbDatum.Text;
                     }
@@ -70,6 +77,7 @@ namespace Zadatak1
                 }
                 D.Naziv = tbNaziv.Text;
                 D.Opis = tbOpis.Text;
+                D.Lokacija = Gradovi[cmbLokacija.SelectedIndex];
 
                 if(postavljen != null)
                      postavljen.Background = new ImageBrush(new BitmapImage(new Uri(D.ImageSource, UriKind.RelativeOrAbsolute)));

@@ -8,7 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/s3.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/s4.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/beograd.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/cacak.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/jagodina.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/leskovac.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/nis.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/novipazar.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/novisad.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/pirot.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/serbia-map.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/sremskamitrovica.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("logoi/subotica.png")]
 
 

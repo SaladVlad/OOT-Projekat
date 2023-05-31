@@ -21,11 +21,16 @@ namespace Zadatak1
     public partial class Dodaj_Dogadjaj : Window
     {
         public ObservableCollection<Dogadjaj> Dogadjaji { get; set; }
-        public Dodaj_Dogadjaj(ObservableCollection<Dogadjaj> dogadjaji)
+        public ObservableCollection<string> Gradovi { get; set; } = new ObservableCollection<string>();
+        public Dodaj_Dogadjaj(ObservableCollection<Dogadjaj> dogadjaji,ObservableCollection<lokacija> lokacije)
         {
             InitializeComponent();
+            DataContext = this;
             Dogadjaji = dogadjaji;
-
+            foreach (lokacija l in lokacije)
+            {
+                Gradovi.Add(l.Grad);
+            }
         }
 
         private void BtnNapravi_Click(object sender, RoutedEventArgs e)
@@ -58,17 +63,20 @@ namespace Zadatak1
                     godina = int.Parse(ss[2]);
 
                     if ((godina > 2022 && godina < 2100) && (mesec >= 1 && mesec <= 12) && (dan >= 1 && dan <= 31)) {
-                        
+
                         int id = int.Parse(tbID.Text);
                         string datumOdrzavanja = tbDatum.Text;
                         string naziv = tbNaziv.Text;
                         string opis = tbOpis.Text;
+
+                        string lokacija = Gradovi[cmbLokacija.SelectedIndex];
+
                         ComboBoxItem cbi = cmbSource.SelectedItem as ComboBoxItem;
                         string imageSource = cbi.Content.ToString();
                         if (imageSource == "(default)") imageSource = "Images/placeholder.png";
                         else imageSource = "Images/" + imageSource + ".png";
 
-                        Dogadjaj d = new Dogadjaj(id, naziv, opis, datumOdrzavanja, imageSource);
+                        Dogadjaj d = new Dogadjaj(id, naziv, opis, datumOdrzavanja, imageSource, lokacija);
                         foreach(Dogadjaj dog in Dogadjaji)
                         {
                             if (dog.Id == id)

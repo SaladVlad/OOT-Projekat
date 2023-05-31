@@ -70,9 +70,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="DodajLokaciju.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dodaj_Dogadjaj.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IzmeniLokaciju.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Izmeni_Dogadjaj.xaml">
       <SubType>Designer</SubType>
@@ -86,13 +94,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DodajLokaciju.xaml.cs" />
     <Compile Include="Dodaj_Dogadjaj.xaml.cs">
       <DependentUpon>Dodaj_Dogadjaj.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dogadjaj.cs" />
+    <Compile Include="IzmeniLokaciju.xaml.cs" />
     <Compile Include="Izmeni_Dogadjaj.xaml.cs">
       <DependentUpon>Izmeni_Dogadjaj.xaml</DependentUpon>
     </Compile>
+    <Compile Include="lokacija.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -126,9 +137,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Dogadjaji.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\s1.png" />
     <Resource Include="Images\s2.png" />
     <Resource Include="Images\serbia-map %281%29.jpg" />
@@ -140,6 +148,19 @@
   <ItemGroup>
     <Resource Include="Images\s3.png" />
     <Resource Include="Images\s4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logoi\beograd.png" />
+    <Resource Include="Logoi\cacak.png" />
+    <Resource Include="Logoi\jagodina.png" />
+    <Resource Include="Logoi\leskovac.png" />
+    <Resource Include="Logoi\nis.png" />
+    <Resource Include="Logoi\novipazar.png" />
+    <Resource Include="Logoi\novisad.png" />
+    <Resource Include="Logoi\pirot.png" />
+    <Resource Include="Logoi\serbia-map.jpg" />
+    <Resource Include="Logoi\sremskamitrovica.png" />
+    <Resource Include="Logoi\subotica.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

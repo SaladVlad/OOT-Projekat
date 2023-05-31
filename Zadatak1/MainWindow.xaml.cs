@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,12 +25,19 @@ namespace Zadatak1
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region PR40/2021
+        #region init
 
-        #region window and lists init
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem menuItem1 = new MenuItem();
+        MenuItem menuItem2 = new MenuItem();
+        List<lokacija> l = new List<lokacija>();
+
+        public ObservableCollection<lokacija> lokacije { get; set; }
         public ObservableCollection<Dogadjaj> TreeNodes { get; set; }
         public ObservableCollection<Dogadjaj> Postavljeni { get; set; }
         public List<TextBlock> listaPostavljenih { get; set; }
+
+        CollectionViewSource treeNodeCollectionViewSource;
 
         Point startPoint = new Point();
         public MainWindow()
@@ -35,16 +45,30 @@ namespace Zadatak1
             InitializeComponent();
             this.DataContext = this;
 
+            l.Add(new lokacija { Id = "1", Grad = "Novi Sad", Drzava = "Srbija", Logo = "/Logoi/novisad.png" });
+            l.Add(new lokacija { Id = "2", Grad = "Beograd", Drzava = "Srbija", Logo = "/Logoi/beograd.png" });
+            l.Add(new lokacija { Id = "3", Grad = "Nis", Drzava = "Srbija", Logo = "/Logoi/nis.png" });
+            l.Add(new lokacija { Id = "4", Grad = "Subotica", Drzava = "Srbija", Logo = "/Logoi/subotica.png" });
+            l.Add(new lokacija { Id = "5", Grad = "Leskovac", Drzava = "Srbija", Logo = "/Logoi/leskovac.png" });
+
+            lokacije = new ObservableCollection<lokacija>(l);
+            menuItem1.Header = "Ukloni ikonicu sa mape";
+            menuItem1.Click += MenuItem_Click;
+            menuItem2.Header = "Ukloni lokaciju iz liste";
+            menuItem2.Click += MenuItem_Click;
+
             TreeNodes = ReadDogadjaji();
             Postavljeni = new ObservableCollection<Dogadjaj>();
             listaPostavljenih = new List<TextBlock>();
 
             ContextMenuService.SetIsEnabled(cmImage, true);
 
+            treeNodeCollectionViewSource = FindResource("TreeNodeCollectionViewSource") as CollectionViewSource;
+
         }
         #endregion
 
-        #region loading/saving from/to  file
+        #region loading/saving from/to file
         public ObservableCollection<Dogadjaj> ReadDogadjaji()
         {
             ObservableCollection<Dogadjaj> dogadjaji = new ObservableCollection<Dogadjaj>();
@@ -57,7 +81,7 @@ namespace Zadatak1
                     {
                         string[] s = line.Split(',');
 
-                        Dogadjaj d = new Dogadjaj(Int32.Parse(s[0]), s[1], s[2], s[3], s[4]);
+                        Dogadjaj d = new Dogadjaj(Int32.Parse(s[0]), s[1], s[2], s[3], s[4], s[5]);
                         dogadjaji.Add(d);
                     }
                 }
@@ -69,8 +93,6 @@ namespace Zadatak1
 
             return dogadjaji;
         }
-
-
         public void BtnSacuvajDogadjaje_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -89,8 +111,9 @@ namespace Zadatak1
                 MessageBox.Show("Neuspesno cuvanje u fajl...");
             }
         }
-
         #endregion
+
+        #region PR40/2021
 
         #region TreeView dragNdrop
         private void TreeView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -99,7 +122,7 @@ namespace Zadatak1
             if (e.ClickCount == 2)
             {
                 TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-                Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(treeViewItem.DataContext as Dogadjaj, listaPostavljenih);
+                Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(treeViewItem.DataContext as Dogadjaj, listaPostavljenih, lokacije);
                 izmeni.Show();
             }
             startPoint = e.GetPosition(null);
@@ -276,7 +299,7 @@ namespace Zadatak1
         private void Izmeni_Dogadjaj_Click(object sender, RoutedEventArgs e)
         {
 
-            if(sender is TextBlock)
+            if (sender is TextBlock)
             {
                 TextBlock element = (TextBlock)sender;
                 if (sender != null && element.Name.Contains("e"))
@@ -285,7 +308,7 @@ namespace Zadatak1
                     {
                         if (element.Name.Replace("e", "") == d.Id.ToString())
                         {
-                            Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
+                            Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih, lokacije);
                             izmeni.Show();
                         }
                     }
@@ -303,7 +326,7 @@ namespace Zadatak1
                     {
                         if (element.Name.Replace("e", "") == d.Id.ToString())
                         {
-                            Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
+                            Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih, lokacije);
                             izmeni.Show();
                         }
                     }
@@ -313,7 +336,7 @@ namespace Zadatak1
                     Dogadjaj d = trv.SelectedItem as Dogadjaj;
                     if (d != null)
                     {
-                        Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih);
+                        Izmeni_Dogadjaj izmeni = new Izmeni_Dogadjaj(d, listaPostavljenih, lokacije);
                         izmeni.Show();
                     }
                 }
@@ -372,7 +395,7 @@ namespace Zadatak1
         private int before;
         private void Dodaj_Dogadjaj_Click(object sender, RoutedEventArgs e)
         {
-            Dodaj_Dogadjaj dodaj = new Dodaj_Dogadjaj(TreeNodes);
+            Dodaj_Dogadjaj dodaj = new Dodaj_Dogadjaj(TreeNodes, lokacije);
 
             MenuItem menuItem = sender as MenuItem;
             ContextMenu contextMenu = menuItem?.Parent as ContextMenu;
@@ -405,6 +428,186 @@ namespace Zadatak1
 
         #endregion
 
+        #endregion
+
+        #region PR39/2021
+        private void ListView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            startPoint = e.GetPosition(null);
+
+        }
+        private void ListView_MouseMove(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                Point mousePos = e.GetPosition(null);
+                Vector diff = startPoint - mousePos;
+
+                if (e.LeftButton == MouseButtonState.Pressed &&
+                    (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+                {
+                    // Get the dragged ListViewItem
+                    ListView listView = sender as ListView;
+                    ListViewItem listViewItem = FindAncestor<ListViewItem>((DependencyObject)e.OriginalSource);
+
+
+                    // Find the data behind the ListViewItem
+
+
+
+                    lokacija nista = (lokacija)listapogleda.SelectedItems[0];
+                    int index = listapogleda.Items.IndexOf(nista);
+                    ListViewItem itemToDisable = (ListViewItem)listapogleda.ItemContainerGenerator.ContainerFromIndex(index);
+                    if (itemToDisable.IsEnabled == true)
+                    {
+                        // Initialize the drag & drop operation
+                        lokacija podaci = (lokacija)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                        DataObject dragData = new DataObject("myFormat", podaci);
+                        DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
+                    }
+                }
+            }
+            catch (ArgumentNullException)
+            {
+
+            }
+        }
+
+        private void slika_DragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent("myFormat") || sender == e.Source)
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+
+        private void slika_Drop(object sender, DragEventArgs e)
+        {
+
+
+            Point dropPosition = e.GetPosition(slika);
+            lokacija podaci = e.Data.GetData("myFormat") as lokacija;
+            TextBlock nesto2 = new TextBlock();
+            if (podaci != null)
+            {
+
+
+                //---------------------------------
+
+                nesto2.Text = podaci.Grad;
+
+                nesto2.HorizontalAlignment = HorizontalAlignment.Center;
+
+                nesto2.PreviewMouseLeftButtonDown += Nesto2_PreviewMouseLeftButtonDown;
+                nesto2.MouseLeftButtonDown += Nesto2_MouseLeftButtonDown;
+                nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
+                nesto2.MouseDown += Nesto2_MouseWheel;
+
+                Image image = new Image();
+                image.Source = new BitmapImage(new Uri(podaci.Logo, UriKind.RelativeOrAbsolute));
+                image.Width = 30;
+                image.Height = 30;
+                InlineUIContainer inlineContainer = new InlineUIContainer(image);
+                nesto2.Inlines.Add(inlineContainer);
+
+                slika.Children.Add(nesto2);
+
+                lokacija nista = (lokacija)listapogleda.SelectedItems[0];
+                int index = listapogleda.Items.IndexOf(nista);
+                ListViewItem itemToDisable = (ListViewItem)listapogleda.ItemContainerGenerator.ContainerFromIndex(index);
+                itemToDisable.IsEnabled = false;
+                itemToDisable.IsHitTestVisible = false;
+
+            }
+            else
+            {
+                nesto2 = nova;
+                nesto2.PreviewMouseLeftButtonDown += Nesto2_PreviewMouseLeftButtonDown;
+                nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
+
+            }
+            Canvas.SetLeft(nesto2, dropPosition.X);
+            Canvas.SetTop(nesto2, dropPosition.Y);
+
+        }
+        TextBlock nova;
+        private void Nesto2_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            nova = sender as TextBlock;
+            DragDrop.DoDragDrop(sender as TextBlock, sender as TextBlock, DragDropEffects.Move);
+
+        }
+        private void Nesto2_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+        TextBlock desno;
+        private void nesto2_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            desno = sender as TextBlock;
+
+            TextBlock textBlock = sender as TextBlock;
+            textBlock.ContextMenu = contextMenu;
+        }
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            //MenuItem menuItem = sender as MenuItem;
+            if (sender == menuItem1)
+            {
+
+                slika.Children.Remove(desno);
+
+            }
+            if (sender == menuItem2)
+            {
+
+                //List<lokacija> itemsToRemove = new List<lokacija>();
+
+                lokacija opa = new lokacija();
+                foreach (lokacija k in l)
+                {
+                    if (k.Grad == desno.Text)
+                    {
+                        opa = k;
+                    }
+                }
+                lokacije.Remove(opa);
+                slika.Children.Remove(desno);
+                string filePath = "Podaci.txt";
+
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    foreach (lokacija item in lokacije)
+                    {
+                        writer.WriteLine(item.Id + ".  " + item.Grad + "  " + item.Drzava + "  " + "LogoPath:" + item.Logo);
+                    }
+                }
+
+            }
+
+        }
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            DodajLokaciju dl = new DodajLokaciju(lokacije, l);
+            dl.Show();
+        }
+
+        private void Nesto2_MouseWheel(object sender, MouseButtonEventArgs e)
+        {
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            {
+
+                TextBlock textBlock = sender as TextBlock;
+                IzmeniLokaciju iz = new IzmeniLokaciju(lokacije, l, textBlock);
+                iz.Show();
+            }
+        }
+
+        #endregion
+
+        #region treci tab :(
         private void Save_XLS_Click(object sender, RoutedEventArgs e)
         {
 
@@ -446,6 +649,23 @@ namespace Zadatak1
             }
         }
 
+        //saving content when the window is closed
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            BtnSacuvajDogadjaje_Click(null, null);
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            //groups resource using property Lokacija inside Dogadjaj
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Lokacija");
+            treeNodeCollectionViewSource.GroupDescriptions.Add(groupDescription);
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            treeNodeCollectionViewSource.GroupDescriptions.Clear();
+        }
         #endregion
     }
 }
