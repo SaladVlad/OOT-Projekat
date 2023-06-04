@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace Zadatak1
 {
@@ -38,28 +41,23 @@ namespace Zadatak1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (tGrad.Text != "" && tSediste.Text != "" && tlogo.Text != "" && tID.Text != "")
+            if (!string.IsNullOrWhiteSpace(tID.Text) && !string.IsNullOrWhiteSpace(tGrad.Text) && !string.IsNullOrWhiteSpace(tSediste.Text) && !string.IsNullOrWhiteSpace(tlogo.Text))
             {
-                lokacija objekat = new lokacija();
-                lokacija temp = new lokacija();
-                int br = 0;
-                foreach (lokacija b in lokacije)
+                string id = tID.Text;
+                string grad = tGrad.Text;
+
+             
+                bool isIdExists = lokacije.Any(item => item.Id == id);
+                bool isGradExists = lokacije.Any(item => item.Grad == grad);
+
+                if (!isIdExists && !isGradExists)
                 {
-                    if (b.Id == tID.Text)
-                    {
-                        br = 1;
-                    }
-
-                }
-
-
-
-                if (br != 1)
-                {
-                    objekat.Id = tID.Text;
-                    objekat.Grad = tGrad.Text;
+                    lokacija objekat = new lokacija();
+                    objekat.Id = id;
+                    objekat.Grad = grad;
                     objekat.Drzava = tSediste.Text;
                     objekat.Logo = UbacivanjePutanje();
+               
                     lokacije.Add(objekat);
 
                     string filePath = "Podaci.txt";
@@ -68,73 +66,91 @@ namespace Zadatak1
                     {
                         foreach (lokacija item in lokacije)
                         {
-                            writer.WriteLine(item.Id + ".  " + item.Grad + "  " + item.Drzava + "  " + "LogoPath:" + item.Logo);
+                            writer.WriteLine(item.Id + ";" + item.Grad + ";" + item.Drzava + ";" + item.Logo);
                         }
                     }
-
                 }
                 else
                 {
-                    MessageBox.Show("Vec postoji poslje sa zadatim ID-em probajte neku drugu vrednost");
+                    MessageBox.Show("Već postoji unos sa zadatim ID-em ili Gradom. Molimo unesite drugu vrednost.");
                     tID.Text = "";
                 }
             }
             else
-                MessageBox.Show("Niste uneli neko od polja");
+            {
+                MessageBox.Show("Niste uneli sva polja.");
+            }
 
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
+        { 
             this.Close();
         }
-
+       
         
         int br2 = 0;
         private string UbacivanjePutanje()
         {
             string logolocation = "";
-            logolocation += "/Logoi/";
+            logolocation += "pack://application:,,,/Logoi/";
+           
             if (br2 == 1)
             {
-                logolocation+="novisad";
+                logolocation+= "novisad.png";
             }else if (br2 == 2)
             {
-                logolocation += "beograd";
+                logolocation += "beograd.png";
             }
             else if (br2 == 3)
             {
-                logolocation += "nis";
+                logolocation += "nis.png";
             }
             else if (br2 == 4)
             {
-                logolocation += "leskovac";
+                logolocation += "leskovac.png";
             }
             else if (br2 == 5)
             {
-                logolocation += "subotica";
+                logolocation += "subotica.png";
             }
             else if (br2 == 6)
             {
-                logolocation += "sremskamitrovica";
+                logolocation += "sremskamitrovica.png";
             }
             else if (br2 == 7)
             {
-                logolocation += "cacak";
+                logolocation += "cacak.png";
             }
             else if (br2 == 8)
             {
-                logolocation += "jagodina";
+                logolocation += "jagodina.png";
             }
             else if (br2 == 9)
             {
-                logolocation += "pirot";
+                logolocation += "pirot.png";
             }
             else if (br2 == 10)
             {
-                logolocation += "novipazar";
+                logolocation += "novipazar.png";
             }
-            logolocation += ".png";
+            else if (br2 == 11)
+            {
+                logolocation += "nista.png";
+            }
+            else
+            {
+                //string selectedItemText = string.Empty;
+
+                //if (tlogo.SelectedItem is ComboBoxItem selectedComboBoxItem)
+                //{
+                //    selectedItemText = selectedComboBoxItem.Content.ToString();
+                //}
+
+                //logolocation += selectedItemText;
+         
+            }
+         
 
             return logolocation;
         }
@@ -179,15 +195,73 @@ namespace Zadatak1
                     case "Novi Pazar":
                         br2 = 10;
                         break;
-                    case "nista":
+                    case "Nista":
                         br2 = 11;
                         break;
+                   
                        
                 }
             }
           
         }
 
-        
+        //private void DodajLogo_Click(object sender, RoutedEventArgs e)
+        //{
+        //    OpenFileDialog openFileDialog = new OpenFileDialog();
+
+        //    openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        //    openFileDialog.Filter = "Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
+
+     
+        //    bool? dialogResult = openFileDialog.ShowDialog();
+        //    if (dialogResult.HasValue && dialogResult.Value)
+        //    {
+        //        string selectedFileName = openFileDialog.FileName;
+        //        string selectedFilePath = Path.GetFullPath(selectedFileName);
+
+           
+        //        string selectedFileNameOnly = Path.GetFileName(selectedFileName);
+
+
+        //        string dirName = AppDomain.CurrentDomain.BaseDirectory; 
+        //        FileInfo fileInfo = new FileInfo(dirName);
+        //        DirectoryInfo parentDir1 = fileInfo.Directory.Parent;
+        //        DirectoryInfo parentDir = parentDir1.Parent;
+        //        string baseDirectory = parentDir.FullName;
+       
+
+
+        //        string destinationFolder = Path.Combine(baseDirectory, "Images");
+
+
+
+        //        Directory.CreateDirectory(destinationFolder);
+
+           
+        //        string destinationFilePath = Path.Combine(destinationFolder, selectedFileNameOnly);
+        //        try
+        //        {
+           
+        //            File.Copy(selectedFilePath, destinationFilePath);
+        //            ComboBoxItem newItem = new ComboBoxItem
+        //            {
+        //                Content = selectedFileNameOnly
+        //            };
+        //            tlogo.Items.Add(newItem);
+
+         
+        //            tlogo.SelectedItem = newItem;
+             
+               
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+                
+
+        //        }
+        //    }
+        //    br2 = 12;
+        //}
     }
 }

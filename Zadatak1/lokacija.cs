@@ -34,7 +34,7 @@ namespace Zadatak1
                 if (value != id)
                 {
                     id = value;
-                    OnPropertyChanged("id");
+                    OnPropertyChanged("Id");
                 }
             }
         }
