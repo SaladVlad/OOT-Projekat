@@ -37,6 +37,8 @@ namespace Zadatak1
         public ObservableCollection<Dogadjaj> Postavljeni { get; set; }
         public List<TextBlock> listaPostavljenih { get; set; }
 
+        
+
         CollectionViewSource treeNodeCollectionViewSource;
 
         Point startPoint = new Point();
@@ -45,17 +47,40 @@ namespace Zadatak1
             InitializeComponent();
             this.DataContext = this;
 
-            l.Add(new lokacija { Id = "1", Grad = "Novi Sad", Drzava = "Srbija", Logo = "/Logoi/novisad.png" });
-            l.Add(new lokacija { Id = "2", Grad = "Beograd", Drzava = "Srbija", Logo = "/Logoi/beograd.png" });
-            l.Add(new lokacija { Id = "3", Grad = "Nis", Drzava = "Srbija", Logo = "/Logoi/nis.png" });
-            l.Add(new lokacija { Id = "4", Grad = "Subotica", Drzava = "Srbija", Logo = "/Logoi/subotica.png" });
-            l.Add(new lokacija { Id = "5", Grad = "Leskovac", Drzava = "Srbija", Logo = "/Logoi/leskovac.png" });
+            //l.Add(new lokacija { Id = "1", Grad = "Novi Sad", Drzava = "Srbija", Logo = "/Logoi/novisad.png" });
+            //l.Add(new lokacija { Id = "2", Grad = "Beograd", Drzava = "Srbija", Logo = "/Logoi/beograd.png" });
+            //l.Add(new lokacija { Id = "3", Grad = "Nis", Drzava = "Srbija", Logo = "/Logoi/nis.png" });
+            //l.Add(new lokacija { Id = "4", Grad = "Subotica", Drzava = "Srbija", Logo = "/Logoi/subotica.png" });
+            //l.Add(new lokacija { Id = "5", Grad = "Leskovac", Drzava = "Srbija", Logo = "/Logoi/leskovac.png" });
+            string[] lines = File.ReadAllLines("Podaci.txt");
+
+            foreach (string line in lines)
+            {
+
+                string[] values = line.Split(';');
+
+                if (values.Length == 4)
+                {
+                    lokacija obj = new lokacija
+                    {
+                        Id = values[0],
+                        Grad = values[1],
+                        Drzava = values[2],
+                        Logo = values[3]
+                    };
+
+                    l.Add(obj);
+                }
+            }
 
             lokacije = new ObservableCollection<lokacija>(l);
             menuItem1.Header = "Ukloni ikonicu sa mape";
             menuItem1.Click += MenuItem_Click;
             menuItem2.Header = "Ukloni lokaciju iz liste";
             menuItem2.Click += MenuItem_Click;
+
+            contextMenu.Items.Add(menuItem1);
+            contextMenu.Items.Add(menuItem2);
 
             TreeNodes = ReadDogadjaji();
             Postavljeni = new ObservableCollection<Dogadjaj>();
@@ -447,28 +472,30 @@ namespace Zadatak1
                     (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
                     Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
                 {
-                    // Get the dragged ListViewItem
-                    ListView listView = sender as ListView;
-                    ListViewItem listViewItem = FindAncestor<ListViewItem>((DependencyObject)e.OriginalSource);
-
-
-                    // Find the data behind the ListViewItem
-
-
-
-                    lokacija nista = (lokacija)listapogleda.SelectedItems[0];
-                    int index = listapogleda.Items.IndexOf(nista);
-                    ListViewItem itemToDisable = (ListViewItem)listapogleda.ItemContainerGenerator.ContainerFromIndex(index);
-                    if (itemToDisable.IsEnabled == true)
+                    try
                     {
-                        // Initialize the drag & drop operation
-                        lokacija podaci = (lokacija)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-                        DataObject dragData = new DataObject("myFormat", podaci);
-                        DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
+                        ListView listView = sender as ListView;
+                        ListViewItem listViewItem = FindAncestor<ListViewItem>((DependencyObject)e.OriginalSource);
+
+                        lokacija nista = (lokacija)listapogleda.SelectedItems[0];
+                        int index = listapogleda.Items.IndexOf(nista);
+                        ListViewItem itemToDisable = (ListViewItem)listapogleda.ItemContainerGenerator.ContainerFromIndex(index);
+
+                        if (itemToDisable.IsEnabled == true)
+                        {
+
+                            lokacija podaci = (lokacija)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                            DataObject dragData = new DataObject("myFormat", podaci);
+                            DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
+                        }
                     }
+                    catch (Exception)
+                    {
+                    }
+
                 }
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException o)
             {
 
             }
@@ -495,6 +522,7 @@ namespace Zadatak1
 
                 //---------------------------------
 
+
                 nesto2.Text = podaci.Grad;
 
                 nesto2.HorizontalAlignment = HorizontalAlignment.Center;
@@ -504,14 +532,19 @@ namespace Zadatak1
                 nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
                 nesto2.MouseDown += Nesto2_MouseWheel;
 
-                Image image = new Image();
-                image.Source = new BitmapImage(new Uri(podaci.Logo, UriKind.RelativeOrAbsolute));
-                image.Width = 30;
-                image.Height = 30;
-                InlineUIContainer inlineContainer = new InlineUIContainer(image);
-                nesto2.Inlines.Add(inlineContainer);
 
+                try
+                {
+                    Image image = new Image();
+                    image.Source = new BitmapImage(new Uri(podaci.Logo, UriKind.RelativeOrAbsolute));
+                    image.Width = 30;
+                    image.Height = 30;
+                    InlineUIContainer inlineContainer = new InlineUIContainer(image);
+                    nesto2.Inlines.Add(inlineContainer);
+                }
+                catch (Exception) { }
                 slika.Children.Add(nesto2);
+
 
                 lokacija nista = (lokacija)listapogleda.SelectedItems[0];
                 int index = listapogleda.Items.IndexOf(nista);
@@ -526,9 +559,11 @@ namespace Zadatak1
                 nesto2.PreviewMouseLeftButtonDown += Nesto2_PreviewMouseLeftButtonDown;
                 nesto2.MouseRightButtonDown += nesto2_MouseRightButtonDown;
 
+
             }
-            Canvas.SetLeft(nesto2, dropPosition.X);
-            Canvas.SetTop(nesto2, dropPosition.Y);
+            Canvas.SetLeft(nesto2, dropPosition.X - 20);
+            Canvas.SetTop(nesto2, dropPosition.Y - 30);
+
 
         }
         TextBlock nova;
@@ -553,17 +588,28 @@ namespace Zadatak1
         }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //MenuItem menuItem = sender as MenuItem;
+            MenuItem menuItem = sender as MenuItem;
             if (sender == menuItem1)
             {
-
+                foreach (lokacija nista in l)
+                {
+                    if (nista.Grad == desno.Text)
+                    {
+                        int index = listapogleda.Items.IndexOf(nista);
+                        ListViewItem itemToDisable = (ListViewItem)listapogleda.ItemContainerGenerator.ContainerFromIndex(index);
+                        itemToDisable.IsEnabled = true;
+                        itemToDisable.IsHitTestVisible = true;
+                        slika.Children.Remove(desno);
+                    }
+                }
                 slika.Children.Remove(desno);
 
             }
             if (sender == menuItem2)
             {
 
-                //List<lokacija> itemsToRemove = new List<lokacija>();
+
+                List<lokacija> itemsToRemove = new List<lokacija>();
 
                 lokacija opa = new lokacija();
                 foreach (lokacija k in l)
@@ -581,7 +627,7 @@ namespace Zadatak1
                 {
                     foreach (lokacija item in lokacije)
                     {
-                        writer.WriteLine(item.Id + ".  " + item.Grad + "  " + item.Drzava + "  " + "LogoPath:" + item.Logo);
+                        writer.WriteLine(item.Id + ";" + item.Grad + ";" + item.Drzava + ";" + item.Logo);
                     }
                 }
 
@@ -649,6 +695,8 @@ namespace Zadatak1
             }
         }
 
+
+
         //saving content when the window is closed
         private void Window_Closed(object sender, EventArgs e)
         {
@@ -666,6 +714,37 @@ namespace Zadatak1
         {
             treeNodeCollectionViewSource.GroupDescriptions.Clear();
         }
+        
+        private void btnSortiraj_Click(object sender, RoutedEventArgs e)
+        {
+            int n = TreeNodes.Count;
+            for (int i = 0; i < n-1; ++i)
+            {
+                for(int j = i+1;j<n; ++j)
+                {
+                    string[] datum1 = TreeNodes[i].DatumOdrzavanja.Split('.');
+                    string[] datum2 = TreeNodes[j].DatumOdrzavanja.Split('.');
+
+                    int godina1 = int.Parse(datum1[2]);
+                    int godina2 = int.Parse(datum2[2]);
+                    if(godina1 < godina2)
+                    {
+                        //TODO//
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+        }
         #endregion
+
+        private void BtnDodaj_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        
     }
 }

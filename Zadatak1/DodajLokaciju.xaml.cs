@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace Zadatak1
 {
@@ -35,26 +36,23 @@ namespace Zadatak1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (tGrad.Text != "" && tSediste.Text != "" && tlogo.Text != "" && tID.Text != "")
+            if (!string.IsNullOrWhiteSpace(tID.Text) && !string.IsNullOrWhiteSpace(tGrad.Text) && !string.IsNullOrWhiteSpace(tSediste.Text) && !string.IsNullOrWhiteSpace(tlogo.Text))
             {
-                lokacija objekat = new lokacija();
-                //lokacija temp = new lokacija();
-                int br = 0;
-                foreach (lokacija b in lokacije)
-                {
-                    if (b.Id == tID.Text)
-                    {
-                        br = 1;
-                    }
+                string id = tID.Text;
+                string grad = tGrad.Text;
 
-                }
 
-                if (br != 1)
+                bool isIdExists = lokacije.Any(item => item.Id == id);
+                bool isGradExists = lokacije.Any(item => item.Grad == grad);
+
+                if (!isIdExists && !isGradExists)
                 {
-                    objekat.Id = tID.Text;
-                    objekat.Grad = tGrad.Text;
+                    lokacija objekat = new lokacija();
+                    objekat.Id = id;
+                    objekat.Grad = grad;
                     objekat.Drzava = tSediste.Text;
                     objekat.Logo = UbacivanjePutanje();
+
                     lokacije.Add(objekat);
 
                     string filePath = "Podaci.txt";
@@ -63,21 +61,23 @@ namespace Zadatak1
                     {
                         foreach (lokacija item in lokacije)
                         {
-                            writer.WriteLine(item.Id + ".  " + item.Grad + "  " + item.Drzava + "  " + "LogoPath:" + item.Logo);
+                            writer.WriteLine(item.Id + ";" + item.Grad + ";" + item.Drzava + ";" + item.Logo);
                         }
                     }
-
                 }
                 else
                 {
-                    MessageBox.Show("Vec postoji poslje sa zadatim ID-em probajte neku drugu vrednost");
+                    MessageBox.Show("Već postoji unos sa zadatim ID-em ili Gradom. Molimo unesite drugu vrednost.");
                     tID.Text = "";
                 }
             }
             else
-                MessageBox.Show("Niste uneli neko od polja");
+            {
+                MessageBox.Show("Niste uneli sva polja.");
+            }
 
         }
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -87,7 +87,8 @@ namespace Zadatak1
         private string UbacivanjePutanje()
         {
             string logolocation = "";
-            logolocation += "/Logoi/";
+            logolocation += "pack://application:,,,/Logoi/";
+
             if (br2 == 1)
             {
                 logolocation+="novisad";
@@ -127,6 +128,18 @@ namespace Zadatak1
             {
                 logolocation += "novipazar";
             }
+            else
+            {
+                //string selectedItemText = string.Empty;
+
+                //if (tlogo.SelectedItem is ComboBoxItem selectedComboBoxItem)
+                //{
+                //    selectedItemText = selectedComboBoxItem.Content.ToString();
+                //}
+
+                //logolocation += selectedItemText;
+
+            }
             logolocation += ".png";
 
             return logolocation;
@@ -139,7 +152,7 @@ namespace Zadatak1
             {
                 string selectedCity = selectedItem.Content.ToString();
 
-                
+
                 switch (selectedCity)
                 {
                     case "Novi Sad":
@@ -172,15 +185,64 @@ namespace Zadatak1
                     case "Novi Pazar":
                         br2 = 10;
                         break;
-                    case "nista":
+                    case "Nista":
                         br2 = 11;
                         break;
-                       
+
+
                 }
             }
-          
+
         }
 
-        
+        //private void DodajLogo_Click(object sender, RoutedEventArgs e)
+        //{
+        //    OpenFileDialog openFileDialog = new OpenFileDialog();
+
+        //    openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        //    openFileDialog.Filter = "Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
+
+        //    bool? dialogResult = openFileDialog.ShowDialog();
+        //    if (dialogResult.HasValue && dialogResult.Value)
+        //    {
+        //        string selectedFileName = openFileDialog.FileName;
+        //        string selectedFilePath = Path.GetFullPath(selectedFileName);
+            
+        //        string selectedFileNameOnly = Path.GetFileName(selectedFileName);
+
+        //        string dirName = AppDomain.CurrentDomain.BaseDirectory; 
+        //        FileInfo fileInfo = new FileInfo(dirName);
+        //        DirectoryInfo parentDir1 = fileInfo.Directory.Parent;
+        //        DirectoryInfo parentDir = parentDir1.Parent;
+        //        string baseDirectory = parentDir.FullName;
+
+        //        string destinationFolder = Path.Combine(baseDirectory, "Images");
+
+        //        Directory.CreateDirectory(destinationFolder);
+
+        //        string destinationFilePath = Path.Combine(destinationFolder, selectedFileNameOnly);
+        //        try
+        //        {
+
+        //            File.Copy(selectedFilePath, destinationFilePath);
+        //            ComboBoxItem newItem = new ComboBoxItem
+        //            {
+        //                Content = selectedFileNameOnly
+        //            };
+        //            tlogo.Items.Add(newItem);
+
+
+        //            tlogo.SelectedItem = newItem;
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //        }
+        //    }
+        //    br2 = 12;
+        //}
+
+
     }
 }
