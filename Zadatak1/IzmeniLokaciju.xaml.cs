@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -13,7 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using Path = System.IO.Path;
 namespace Zadatak1
 {
     /// <summary>
@@ -93,8 +94,7 @@ namespace Zadatak1
             {
                 tlogo.SelectedIndex = 9;
             }
-            else
-                tlogo.SelectedIndex = 10;
+         
 
         }
 
@@ -116,7 +116,9 @@ namespace Zadatak1
                 isGradUnique = true;
             }
             bool isFieldsNotEmpty = !string.IsNullOrWhiteSpace(dID.Text) && !string.IsNullOrWhiteSpace(tGrad.Text) && !string.IsNullOrWhiteSpace(tSediste.Text);
-            if (isIdUnique && isGradUnique && isFieldsNotEmpty)
+            bool isIdValidNumber = int.TryParse(dID.Text, out int parsedId);
+
+            if (isIdUnique && isGradUnique && isFieldsNotEmpty && isIdValidNumber)
             {
                 objekat.Id = dID.Text;
                 objekat.Grad = tGrad.Text;
@@ -152,7 +154,7 @@ namespace Zadatak1
         int br2 = -1;
         private string UbacivanjePutanje()
         {
-            string logolocation = "pack://application:,,,/Logoi/";
+            string logolocation = "pack://application:,,,";
             logolocation += "/Logoi/";
             if (br2 == 1)
             {
@@ -193,6 +195,22 @@ namespace Zadatak1
             else if (br2 == 10)
             {
                 logolocation += "novipazar";
+            }
+            else
+            {
+                logolocation = "";
+                logolocation = "C:\\Users\\Tomas\\Desktop\\OOT-PROJEKAT\\Zadatak1\\Logoi\\";
+                string selectedItemText = string.Empty;
+
+                if (tlogo.SelectedItem is ComboBoxItem selectedComboBoxItem)
+                {
+                    selectedItemText = selectedComboBoxItem.Content.ToString();
+                }
+
+                logolocation += selectedItemText;
+
+                return logolocation;
+
             }
             logolocation += ".png";
 
@@ -238,12 +256,59 @@ namespace Zadatak1
                     case "Novi Pazar":
                         br2 = 10;
                         break;
-                    case "nista":
+                    case "Nista":
                         br2 = 11;
                         break;
 
                 }
             }
+        }
+        private void DodajLogo_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            openFileDialog.Filter = "Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
+
+            bool? dialogResult = openFileDialog.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value)
+            {
+                string selectedFileName = openFileDialog.FileName;
+                string selectedFilePath = Path.GetFullPath(selectedFileName);
+
+                string selectedFileNameOnly = Path.GetFileName(selectedFileName);
+
+                string dirName = AppDomain.CurrentDomain.BaseDirectory;
+                FileInfo fileInfo = new FileInfo(dirName);
+                DirectoryInfo parentDir1 = fileInfo.Directory.Parent;
+                DirectoryInfo parentDir = parentDir1.Parent;
+                string baseDirectory = parentDir.FullName;
+
+                string destinationFolder = Path.Combine(baseDirectory, "Logoi");
+
+                Directory.CreateDirectory(destinationFolder);
+
+                string destinationFilePath = Path.Combine(destinationFolder, selectedFileNameOnly);
+                try
+                {
+
+                    File.Copy(selectedFilePath, destinationFilePath);
+                    ComboBoxItem newItem = new ComboBoxItem
+                    {
+                        Content = selectedFileNameOnly
+                    };
+                    tlogo.Items.Add(newItem);
+
+
+                    tlogo.SelectedItem = newItem;
+
+                }
+                catch (Exception )
+                {
+
+                }
+            }
+            br2 = 12;
         }
     }
 }

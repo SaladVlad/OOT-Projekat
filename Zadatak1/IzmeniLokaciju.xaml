@@ -42,7 +42,7 @@
             <ComboBoxItem VerticalAlignment="Center">Novi Pazar</ComboBoxItem>
             <ComboBoxItem VerticalAlignment="Center">Nista</ComboBoxItem>
         </ComboBox>
-
+        <Button Name="DodajLogo" Grid.Row="3" Grid.Column="3" Margin="10" Grid.ColumnSpan="2" Click="DodajLogo_Click">Dodaj logo</Button>
         <Button Grid.Row="5" Margin="10 10 10 10" Grid.ColumnSpan="2" FontWeight="Bold" Click="Button_Click_1">Izmeni</Button>
         <Button  Grid.Row="5" Grid.Column="2" Margin="10 10 10 10" Grid.ColumnSpan="2" FontWeight="Bold" Click="Button_Click">Otkazi</Button>
 

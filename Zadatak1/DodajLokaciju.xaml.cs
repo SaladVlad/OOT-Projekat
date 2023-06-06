@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -42,6 +43,13 @@ namespace Zadatak1
                 string grad = tGrad.Text;
 
 
+                if (!int.TryParse(id, out int parsedId))
+                {
+                    MessageBox.Show("ID mora biti broj.");
+                    tID.Text = "";
+                    return;
+                }
+
                 bool isIdExists = lokacije.Any(item => item.Id == id);
                 bool isGradExists = lokacije.Any(item => item.Grad == grad);
 
@@ -68,7 +76,6 @@ namespace Zadatak1
                 else
                 {
                     MessageBox.Show("Već postoji unos sa zadatim ID-em ili Gradom. Molimo unesite drugu vrednost.");
-                    tID.Text = "";
                 }
             }
             else
@@ -130,14 +137,18 @@ namespace Zadatak1
             }
             else
             {
-                //string selectedItemText = string.Empty;
+                logolocation = "";
+                logolocation = "C:\\Users\\Tomas\\Desktop\\OOT-PROJEKAT\\Zadatak1\\Logoi\\";
+                string selectedItemText = string.Empty;
 
-                //if (tlogo.SelectedItem is ComboBoxItem selectedComboBoxItem)
-                //{
-                //    selectedItemText = selectedComboBoxItem.Content.ToString();
-                //}
+                if (tlogo.SelectedItem is ComboBoxItem selectedComboBoxItem)
+                {
+                    selectedItemText = selectedComboBoxItem.Content.ToString();
+                }
 
-                //logolocation += selectedItemText;
+                logolocation += selectedItemText;
+
+                return logolocation;
 
             }
             logolocation += ".png";
@@ -195,53 +206,53 @@ namespace Zadatak1
 
         }
 
-        //private void DodajLogo_Click(object sender, RoutedEventArgs e)
-        //{
-        //    OpenFileDialog openFileDialog = new OpenFileDialog();
+        private void DodajLogo_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
 
-        //    openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-        //    openFileDialog.Filter = "Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            openFileDialog.Filter = "Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
 
-        //    bool? dialogResult = openFileDialog.ShowDialog();
-        //    if (dialogResult.HasValue && dialogResult.Value)
-        //    {
-        //        string selectedFileName = openFileDialog.FileName;
-        //        string selectedFilePath = Path.GetFullPath(selectedFileName);
-            
-        //        string selectedFileNameOnly = Path.GetFileName(selectedFileName);
+            bool? dialogResult = openFileDialog.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value)
+            {
+                string selectedFileName = openFileDialog.FileName;
+                string selectedFilePath = Path.GetFullPath(selectedFileName);
 
-        //        string dirName = AppDomain.CurrentDomain.BaseDirectory; 
-        //        FileInfo fileInfo = new FileInfo(dirName);
-        //        DirectoryInfo parentDir1 = fileInfo.Directory.Parent;
-        //        DirectoryInfo parentDir = parentDir1.Parent;
-        //        string baseDirectory = parentDir.FullName;
+                string selectedFileNameOnly = Path.GetFileName(selectedFileName);
 
-        //        string destinationFolder = Path.Combine(baseDirectory, "Images");
+                string dirName = AppDomain.CurrentDomain.BaseDirectory;
+                FileInfo fileInfo = new FileInfo(dirName);
+                DirectoryInfo parentDir1 = fileInfo.Directory.Parent;
+                DirectoryInfo parentDir = parentDir1.Parent;
+                string baseDirectory = parentDir.FullName;
 
-        //        Directory.CreateDirectory(destinationFolder);
+                string destinationFolder = Path.Combine(baseDirectory, "Logoi");
 
-        //        string destinationFilePath = Path.Combine(destinationFolder, selectedFileNameOnly);
-        //        try
-        //        {
+                Directory.CreateDirectory(destinationFolder);
 
-        //            File.Copy(selectedFilePath, destinationFilePath);
-        //            ComboBoxItem newItem = new ComboBoxItem
-        //            {
-        //                Content = selectedFileNameOnly
-        //            };
-        //            tlogo.Items.Add(newItem);
+                string destinationFilePath = Path.Combine(destinationFolder, selectedFileNameOnly);
+                try
+                {
+
+                    File.Copy(selectedFilePath, destinationFilePath);
+                    ComboBoxItem newItem = new ComboBoxItem
+                    {
+                        Content = selectedFileNameOnly
+                    };
+                    tlogo.Items.Add(newItem);
 
 
-        //            tlogo.SelectedItem = newItem;
+                    tlogo.SelectedItem = newItem;
 
-        //        }
-        //        catch (Exception ex)
-        //        {
+                }
+                catch (Exception )
+                {
 
-        //        }
-        //    }
-        //    br2 = 12;
-        //}
+                }
+            }
+            br2 = 12;
+        }
 
 
     }

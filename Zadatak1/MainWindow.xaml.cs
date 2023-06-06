@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -17,12 +19,15 @@ using Microsoft.Win32;
 using OfficeOpenXml;
 //----------------------------//
 /*Disclaimer: used a NuGet package inside solution, install before using "Save to .xls" function.*/
-
+//PR39/2021 Tomasevic Nikola , PR40/2021 Vladislav Petkovic
+/// ******** OBAVEZNO PROCITATI ****************
+/// Izmena za lokacija se aktivira preko middle clicka
+/// Za dodaj lokaciju da bi dodali preko openfiledialog potrebno je da postavite full path na 135. liniji koda DodajLokaciju.xaml.cs (nije radilo na normalan nacin)
+/// Za izmeni lokaciju da bi dodali sliku preko openfiledialog potrebno je da postavite full path na  201. liniju koda u IzmeniLokaciju.xaml.cs
 namespace Zadatak1
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+   
+
     public partial class MainWindow : Window
     {
         #region init
@@ -495,7 +500,7 @@ namespace Zadatak1
 
                 }
             }
-            catch (ArgumentNullException o)
+            catch (ArgumentNullException )
             {
 
             }
@@ -591,7 +596,7 @@ namespace Zadatak1
             MenuItem menuItem = sender as MenuItem;
             if (sender == menuItem1)
             {
-                foreach (lokacija nista in l)
+                foreach (lokacija nista in lokacije)
                 {
                     if (nista.Grad == desno.Text)
                     {
@@ -612,7 +617,7 @@ namespace Zadatak1
                 List<lokacija> itemsToRemove = new List<lokacija>();
 
                 lokacija opa = new lokacija();
-                foreach (lokacija k in l)
+                foreach (lokacija k in lokacije)
                 {
                     if (k.Grad == desno.Text)
                     {
@@ -666,7 +671,7 @@ namespace Zadatak1
             {
                 filePath = saveFileDialog.FileName;
 
-                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
                 using (ExcelPackage package = new ExcelPackage())
                 {
                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Lista");
@@ -717,27 +722,23 @@ namespace Zadatak1
         
         private void btnSortiraj_Click(object sender, RoutedEventArgs e)
         {
-            int n = TreeNodes.Count;
-            for (int i = 0; i < n-1; ++i)
-            {
-                for(int j = i+1;j<n; ++j)
-                {
-                    string[] datum1 = TreeNodes[i].DatumOdrzavanja.Split('.');
-                    string[] datum2 = TreeNodes[j].DatumOdrzavanja.Split('.');
 
-                    int godina1 = int.Parse(datum1[2]);
-                    int godina2 = int.Parse(datum2[2]);
-                    if(godina1 < godina2)
-                    {
-                        //TODO//
-                    }
-                    else
-                    {
 
-                    }
-                }
-            }
+            //var sortedItems = dtg.Items.Cast<Dogadjaj>().OrderBy(item =>
+            //{
+            //    if (DateTime.TryParseExact(item.DatumOdrzavanja, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
+            //    {
+            //        return date;
+            //    }
+            //    return DateTime.MinValue;
+            //});
+
+            //dtg.ItemsSource = sortedItems.ToList();
+      
+
         }
+
+
         #endregion
 
         private void BtnDodaj_Click(object sender, RoutedEventArgs e)

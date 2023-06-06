@@ -30,3 +30,34 @@ E:\Visual Studio Projects\Zadatak1\Zadatak1\obj\Debug\Zadatak1.csproj.CoreCompil
 E:\Visual Studio Projects\Zadatak1\Zadatak1\obj\Debug\Zadatak1.csproj.CopyComplete
 E:\Visual Studio Projects\Zadatak1\Zadatak1\obj\Debug\Zadatak1.exe
 E:\Visual Studio Projects\Zadatak1\Zadatak1\obj\Debug\Zadatak1.pdb
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\bin\Debug\Zadatak1.exe.config
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\bin\Debug\Zadatak1.exe
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\bin\Debug\Zadatak1.pdb
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\bin\Debug\EPPlus.dll
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\bin\Debug\EPPlus.Interfaces.dll
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\bin\Debug\EPPlus.System.Drawing.dll
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\bin\Debug\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\bin\Debug\EPPlus.xml
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\bin\Debug\Microsoft.IO.RecyclableMemoryStream.xml
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1.csproj.AssemblyReference.cache
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\DodajLokaciju.g.cs
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Dodaj_Dogadjaj.g.cs
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\IzmeniLokaciju.g.cs
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Izmeni_Dogadjaj.g.cs
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\MainWindow.g.cs
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\App.g.cs
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1_MarkupCompile.cache
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1_MarkupCompile.lref
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\DodajLokaciju.baml
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Dodaj_Dogadjaj.baml
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\IzmeniLokaciju.baml
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Izmeni_Dogadjaj.baml
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\MainWindow.baml
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1.g.resources
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1.Properties.Resources.resources
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1.csproj.GenerateResource.cache
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1.csproj.CoreCompileInputs.cache
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1.csproj.CopyComplete
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1.exe
+C:\Users\Tomas\Desktop\OOT-PROJEKAT\Zadatak1\obj\Debug\Zadatak1.pdb

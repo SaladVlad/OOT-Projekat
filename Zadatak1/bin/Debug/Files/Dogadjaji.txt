@@ -4,4 +4,4 @@
 888,Default,Ovo je lokacija,12.12.2025.,Images/s2.png,Beograd
 5,sgh,sfghsfg,12.12.2024.,Images/s3.png,Nis
 11212,dsffgdfg,dgsdgf,12.12.2023.,Images/s1.png,Leskovac
-455,DOgakdkd,Opis ovog dogadjaja,4.12.2023.,Images/s2.png,Subotica
+455,DOgakdkd,Opis ovog dogadjaja,04.12.2023.,Images/s2.png,Subotica

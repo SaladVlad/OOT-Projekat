@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zadatak1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="900" Closed="Window_Closed">
+        Title="MainWindow" Height="750" Width="900" Closed="Window_Closed">
 
     <Window.Resources>
         <CollectionViewSource x:Key="TreeNodeCollectionViewSource" Source="{Binding TreeNodes}"></CollectionViewSource>
@@ -143,7 +143,7 @@
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Naziv" Binding="{Binding Naziv}"/>
                             <DataGridTextColumn Header="Opis" Binding="{Binding Opis}"/>
-                            <DataGridTextColumn Header="Datum Odrzavanja" Binding="{Binding DatumOdrzavanja}"/>
+                            <DataGridTextColumn Header="Datum Odrzavanja" Binding="{Binding DatumOdrzavanja, StringFormat={}{0:dd.MM.yyyy}}" SortMemberPath="DatumOdrzavanja" />
                             <DataGridTextColumn Header="Lokacija događaja" Binding="{Binding Lokacija}"></DataGridTextColumn>
                         </DataGrid.Columns>
 
